@@ -1,0 +1,266 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Staff Dashboard</title>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+
+    <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@300;400;500;700&display=swap" rel="stylesheet">
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+    <link rel="stylesheet" href="staff_dashboard.css">
+
+</head>
+
+<body>
+
+    <header class="top-navbar">
+
+        <div class="logo-section">
+            <div class="logo-box"></div>
+            <span>VANITY CREATION</span>
+        </div>
+
+        <div class="navbar-right">
+
+            <div class="search-box">
+                <i class="fa-solid fa-magnifying-glass"></i>
+                <input type="text" placeholder="Search photos by tag, email, or file name">
+            </div>
+            <div class="user-profile">
+
+                <img id="userAvatar" class="avatar" src="https://via.placeholder.com/42" alt="Profile">
+
+                <span id="userName">
+                    Loading...
+                </span>
+
+            </div>
+        </div>
+
+        </div>
+
+    </header>
+
+
+    <div class="dashboard-wrapper">
+
+        <!-- SIDEBAR -->
+
+        <aside class="sidebar">
+
+            <nav>
+
+                <a href="#" class="active">
+                    <i class="fa-solid fa-table-cells-large"></i>
+                    Dashboard
+                </a>
+
+                <a href="client_dashboard.html">
+                    <i class="fa-solid fa-users"></i>
+                    Clients
+                </a>
+
+                <a href="#">
+                    <i class="fa-solid fa-book"></i>
+                    Repository
+                </a>
+
+                <a href="#">
+                    <i class="fa-solid fa-credit-card"></i>
+                    Payments
+                </a>
+
+                <a href="#">
+                    <i class="fa-solid fa-user"></i>
+                    Profile
+                </a>
+
+                <a href="#">
+                    <i class="fa-solid fa-gear"></i>
+                    Settings
+                </a>
+
+            </nav>
+
+            <a href="landing_page.html" class="logout-btn" id="logoutBtn">
+
+                <i class="fa-solid fa-arrow-right-from-bracket logout-icon"></i>
+
+                <span>Log out</span>
+
+            </a>
+
+        </aside>
+
+
+        <!-- CONTENT -->
+
+        <main class="content">
+
+            <div class="page-header">
+                <h1>Welcome back!</h1>
+                <p>See the latest updates on your work.</p>
+            </div>
+
+            <div class="stats-grid">
+
+                <div class="card">
+                    <i class="fa-solid fa-users"></i>
+                    <span>Total Customers</span>
+                    <h2>67</h2>
+                </div>
+
+                <div class="card">
+                    <i class="fa-solid fa-folder"></i>
+                    <span>Total Folders</span>
+                    <h2>45</h2>
+                </div>
+
+                <div class="card">
+                    <i class="fa-solid fa-image"></i>
+                    <span>Total Photos</span>
+                    <h2>1,067</h2>
+                </div>
+
+                <div class="card">
+                    <i class="fa-solid fa-circle-check green"></i>
+                    <span>Active</span>
+                    <h2>30</h2>
+                </div>
+
+                <div class="card">
+                    <i class="fa-solid fa-circle-xmark red"></i>
+                    <span>Expired</span>
+                    <h2>23</h2>
+                </div>
+
+            </div>
+
+            <h3 class="section-title">
+                Recent Stored Sessions
+            </h3>
+
+            <div class="sessions-panel"></div>
+
+        </main>
+
+    </div>
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
+
+
+    <script>
+        const supabaseClient = supabase.createClient(
+            "https://rejaosaylldyhvbyhgxl.supabase.co",
+            "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InJlamFvc2F5bGxkeWh2YnloZ3hsIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODEwMjE3MDUsImV4cCI6MjA5NjU5NzcwNX0.1GNinip2Qs923GaoVe6E2EGxp6ixnsJgF4bfDkH2K4A"
+        );
+        window.addEventListener("load", async () => {
+
+            try {
+
+                // Handle OAuth errors
+                const params = new URLSearchParams(window.location.search);
+
+                if (params.get("error")) {
+                    alert(params.get("error_description") || "Login failed");
+                    window.location.href = "staff_login.html";
+                    return;
+                }
+
+                // Check session
+                const {
+                    data: { session }
+                } = await supabaseClient.auth.getSession();
+
+                if (!session) {
+                    window.location.href = "staff_login.html";
+                    return;
+                }
+
+                const user = session.user;
+
+                // Load profile
+                let { data: profile, error } = await supabaseClient
+                    .from("staff_profiles")
+                    .select("*")
+                    .eq("id", user.id)
+                    .single();
+
+                if (error && error.code !== "PGRST116") {
+                    console.error(error);
+                }
+
+                // Create profile if first login
+                if (!profile) {
+
+                    const { data: newProfile, error: insertError } =
+                        await supabaseClient
+                            .from("staff_profiles")
+                            .insert([{
+                                id: user.id,
+                                email: user.email,
+                                full_name:
+                                    user.user_metadata?.full_name ||
+                                    user.user_metadata?.name ||
+                                    "Staff User",
+                                avatar_url:
+                                    user.user_metadata?.avatar_url || "",
+                                role: "staff",
+                                verified: true
+                            }])
+                            .select()
+                            .single();
+
+                    if (insertError) {
+                        console.error(insertError);
+                        alert("Unable to create profile.");
+                        return;
+                    }
+
+                    profile = newProfile;
+                }
+
+                // Admin approval check
+                if (profile.verified === false) {
+                    alert("Waiting for admin approval");
+                    window.location.href = "verification_code.html";
+                    return;
+                }
+
+                // Update navbar
+                document.getElementById("userName").textContent =
+                    profile.full_name;
+
+                if (profile.avatar_url) {
+                    document.getElementById("userAvatar").src =
+                        profile.avatar_url;
+                }
+
+            } catch (err) {
+                console.error(err);
+                alert("Something went wrong.");
+            }
+
+        });
+
+        // Logout button
+        document.getElementById("logoutBtn")
+            .addEventListener("click", async (e) => {
+
+                e.preventDefault();
+
+                await supabaseClient.auth.signOut();
+
+                window.location.href = "staff_login.html";
+            });
+    </script>
+</body>
+
+</html>

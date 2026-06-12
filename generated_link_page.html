@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Enter Access Link - Vanity Creation</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,100..1000;1,9..40,100..1000&display=swap"
+        rel="stylesheet">
+    <link rel="stylesheet" href="designs.css">
+</head>
+
+<body>
+
+    <div class="access-wrapper">
+        <div class="top-accent-line"></div>
+
+        <h1 class="access-heading">Enter Access Link</h1>
+        <p class="access-subtext">Access your image collection using the link provided by the studio.</p>
+
+        <div class="access-card-container">
+            <form class="access-form" id="customerLinkForm">
+
+                <div class="input-field-wrapper">
+                    <input type="url" id="accessUrl" placeholder="Enter link here" required autocomplete="off">
+                </div>
+
+                <button type="submit" class="submit-continue-btn">Continue</button>
+
+            </form>
+        </div>
+    </div>
+
+    <script>
+        const clientForm = document.getElementById('customerLinkForm');
+
+        // Form submission behavior logic to handle and evaluate user inputs
+        clientForm.addEventListener('submit', (event) => {
+            event.preventDefault();
+            const targetUrl = document.getElementById('accessUrl').value;
+
+            // Simulates parsing the customer's input repository token string safely
+            alert(`Access link processing sequence initiated.\nRouting request securely to repository source:\n${targetUrl}`);
+        });
+    </script>
+</body>
+
+</html>

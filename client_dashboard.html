@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Clients</title>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@300;400;500;600;700&display=swap"
+        rel="stylesheet">
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+
+    <link rel="stylesheet" href="client_dashboard.css">
+</head>
+
+<body>
+
+    <!-- TOP NAVBAR -->
+    <header class="top-navbar">
+
+        <div class="logo-area">
+            <div class="logo-box"></div>
+            <span>Website Name</span>
+        </div>
+
+        <div class="top-right">
+
+            <div class="top-search">
+                <i class="fa-solid fa-magnifying-glass"></i>
+                <input type="text" placeholder="Search photos by tag, email, or file name">
+            </div>
+
+            <div class="avatar"></div>
+
+        </div>
+
+    </header>
+
+
+    <div class="workspace">
+
+        <!-- SIDEBAR -->
+        <aside class="sidebar">
+
+            <nav>
+
+                <a href="staff_dashboard.html" class="menu-item">
+                    <i class="fa-solid fa-table-cells-large"></i>
+                    Dashboard
+                </a>
+
+                <a href="client_dashboard.html" class="menu-item active">
+                    <i class="fa-solid fa-users"></i>
+                    Clients
+                </a>
+
+                <a href="repository.html" class="menu-item">
+                    <i class="fa-solid fa-book"></i>
+                    Repository
+                </a>
+
+                <a href="payments.html" class="menu-item">
+                    <i class="fa-solid fa-credit-card"></i>
+                    Payments
+                </a>
+
+                <a href="profile.html" class="menu-item">
+                    <i class="fa-solid fa-user"></i>
+                    Profile
+                </a>
+
+                <a href="settings.html" class="menu-item">
+                    <i class="fa-solid fa-gear"></i>
+                    Settings
+                </a>
+
+            </nav>
+
+            <button class="logout-btn" id="logoutBtn">
+                <i class="fa-solid fa-arrow-right-from-bracket"></i>
+                Log out
+            </button>
+
+        </aside>
+        <!-- CONTENT -->
+        <main class="content">
+
+            <div class="page-header">
+
+                <div>
+                    <h1>Client List</h1>
+                    <p>Browse and manage your clients records.</p>
+                </div>
+
+                <div class="header-actions">
+
+                    <div class="client-search">
+                        <input type="text" placeholder="Search client...">
+                        <i class="fa-solid fa-magnifying-glass"></i>
+                    </div>
+
+                    <button class="filter-btn">
+                        <i class="fa-solid fa-filter"></i>
+                        Filter
+                    </button>
+
+                    <button class="add-client-btn">
+                        <i class="fa-solid fa-pen-to-square"></i>
+                        Add New Client
+                    </button>
+
+                </div>
+
+            </div>
+
+            <!-- CLIENT TABLE -->
+            <div class="table-card">
+
+                <table>
+
+                    <thead>
+                        <tr>
+                            <th>Clients</th>
+                            <th>Email Address</th>
+                            <th>Event Type</th>
+                            <th>Expiry Date</th>
+                            <th>Payment Status</th>
+                            <th>Access Status</th>
+                        </tr>
+                    </thead>
+
+                    <tbody id="clientTableBody">
+
+                        <!-- Future client records go here -->
+
+                    </tbody>
+
+                </table>
+
+                <div class="empty-state">
+
+                    <i class="fa-solid fa-users"></i>
+
+                    <h3>No Clients Yet</h3>
+
+                    <p>
+                        Clients that you add will appear here.
+                    </p>
+
+                </div>
+
+            </div>
+
+        </main>
+
+    </div>
+
+    <script>
+
+        const addClientBtn =
+            document.querySelector(".add-client-btn");
+
+        addClientBtn.addEventListener("click", () => {
+
+            alert(
+                "Client form will open here."
+            );
+
+        });
+
+    </script>
+
+</body>
+
+</html>

@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Vanity Creation Photo Studios</title>
+    <!-- Google Fonts: DM Sans -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,100..1000;1,9..40,100..1000&display=swap"
+        rel="stylesheet">
+    <!-- FontAwesome for original mockup icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Separate Stylesheet -->
+    <link rel="stylesheet" href="landing.css">
+</head>
+
+<body>
+
+    <!-- Navigation Bar -->
+    <nav class="navbar">
+        <div class="nav-container">
+            <div class="nav-logo">
+                <div class="logo-box"></div>
+            </div>
+            <ul class="nav-links">
+                <li><a href="#home">HOME</a></li>
+                <li><a href="#about">ABOUT US</a></li>
+                <li><a href="#gallery">GALLERY</a></li>
+                <li><a href="#contact">CONTACT</a></li>
+            </ul>
+            <button class="hamburger-btn" id="menuToggleBtn" aria-label="Toggle Navigation Options">
+                <i class="fa-solid fa-bars"></i>
+            </button>
+        </div>
+    </nav>
+
+    <!-- User Options Card Dropdown/Modal -->
+    <div class="modal-backdrop" id="optionsModal">
+        <div class="user-options-card">
+            <button class="close-card-btn" id="closeCardBtn">&times;</button>
+
+            <!-- Staff Login Button (Dark Slate) -->
+            <a href="staff_login.html" class="option-btn staff-login-btn">
+                <i class="fa-regular fa-user"></i>
+                <span>Staff Login</span>
+            </a>
+
+            <!-- Customer Login Button (White outlined) -->
+            <a href="customer_login.html" class="option-btn customer-login-btn">
+                <i class="fa-solid fa-user"></i>
+                <span>Customer Login</span>
+            </a>
+        </div>
+    </div>
+
+    <!-- Home Section -->
+    <header id="home" class="hero-section">
+        <div class="hero-overlay-content">
+            <div class="horizontal-divider"></div>
+            <h1 class="hero-title">Vanity Creation</h1>
+            <p class="hero-subtitle">PHOTO STUDIO</p>
+            <div class="horizontal-divider"></div>
+        </div>
+    </header>
+
+    <!-- About Us Section -->
+    <section id="about" class="about-section">
+        <div class="about-content-wrapper">
+            <div class="accent-line-white"></div>
+            <h2 class="section-title">WELCOME</h2>
+            <p class="about-description">
+                A curated space for managing digital imagery with precision and ease. Designed for centralized storage
+                and seamless organization, it leverages intelligent auto-tagging to automatically classify uploads,
+                ensuring images remain easily discoverable and well-structured within a cohesive visual repository.
+            </p>
+        </div>
+    </section>
+
+    <!-- Gallery Section -->
+    <section id="gallery" class="gallery-section">
+        <!-- Center Text Overlays -->
+        <div class="gallery-header-overlay">
+            <div class="accent-line-thin"></div>
+            <h2 class="gallery-title">OUR WORKS</h2>
+            <div class="accent-line-thin"></div>
+        </div>
+
+        <!-- 2x2 Photo Studio Responsive Grid replacing block colors -->
+        <div class="gallery-grid-container">
+            <div class="grid-image item-one"></div>
+            <div class="grid-image item-two"></div>
+            <div class="grid-image item-three"></div>
+            <div class="grid-image item-four"></div>
+        </div>
+    </section>
+
+    <!-- Contact & Footer Section -->
+    <footer id="contact" class="footer-section">
+        <div class="footer-inner-container">
+            <hr class="section-divider-line">
+
+            <div class="footer-main-layout">
+                <!-- Contact Methods Section -->
+                <div class="contact-details-column">
+                    <div class="contact-row">
+                        <i class="fa-solid fa-location-dot contact-icon"></i>
+                        <span class="contact-text">Dasmariñas City, Cavite</span>
+                    </div>
+                    <div class="contact-row">
+                        <i class="fa-solid fa-phone contact-icon"></i>
+                        <span class="contact-text">+63 995 915 8209</span>
+                    </div>
+                    <div class="contact-row">
+                        <i class="fa-solid fa-envelope contact-icon"></i>
+                        <span class="contact-text">vanitycreationbyriceea@gmail.com</span>
+                    </div>
+                </div>
+
+                <!-- Media Section Right Side Alignment -->
+                <div class="brand-media-column">
+                    <div class="gray-graphic-placeholder"></div>
+                    <div class="social-media-bar">
+                        <a href="#" aria-label="Facebook"><i class="fa-brands fa-square-facebook"></i></a>
+                        <a href="#" aria-label="Instagram"><i class="fa-brands fa-instagram"></i></a>
+                        <a href="#" aria-label="Twitter"><i class="fa-brands fa-twitter"></i></a>
+                    </div>
+                </div>
+            </div>
+
+            <hr class="section-divider-line">
+            <p class="copyright-notice">© All rights reserved.</p>
+        </div>
+    </footer>
+
+    <!-- Hamburger UI Interactions Javascript logic -->
+    <script>
+        const menuToggleBtn = document.getElementById('menuToggleBtn');
+        const optionsModal = document.getElementById('optionsModal');
+        const closeCardBtn = document.getElementById('closeCardBtn');
+
+        menuToggleBtn.addEventListener('click', () => {
+            optionsModal.classList.add('visible');
+        });
+
+        closeCardBtn.addEventListener('click', () => {
+            optionsModal.classList.remove('visible');
+        });
+
+        optionsModal.addEventListener('click', (event) => {
+            if (event.target === optionsModal) {
+                optionsModal.classList.remove('visible');
+            }
+        });
+    </script>
+</body>
+
+</html>

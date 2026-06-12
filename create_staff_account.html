@@ -1,0 +1,243 @@
+<!DOCTYPE html>
+<html lang="en">
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Staff Registration - Get Started</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,100..1000;1,9..40,100..1000&display=swap"
+        rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="staff_account_signup.css">
+</head>
+
+<body>
+
+    <div class="signup-wrapper">
+        <div class="top-accent-line"></div>
+
+        <h1 class="welcome-heading">Get Started</h1>
+        <p class="welcome-subtext">Create your account in seconds.</p>
+
+        <div class="signup-card-container">
+            <form class="signup-form" id="staffSignupForm">
+
+                <div class="input-group">
+                    <input type="text" id="fullName" autocomplete="name" required placeholder=" ">
+                    <label for="fullName">Full Name</label>
+                </div>
+
+                <div class="input-group">
+                    <input type="email" id="email" autocomplete="email" required placeholder=" ">
+                    <label for="email">Email Address</label>
+                </div>
+
+                <div class="input-group password-group">
+                    <input type="password" id="password" autocomplete="new-password" required placeholder=" ">
+                    <label for="password">Password</label>
+                    <button type="button" class="toggle-password" id="passwordToggle"
+                        aria-label="Toggle password visibility">
+                        <i class="fa-regular fa-eye-slash"></i>
+                    </button>
+                </div>
+
+                <div class="forgot-password-wrapper">
+                    <a href="#" class="forgot-link">Forgot Password</a>
+                </div>
+
+                <button type="submit" class="submit-signup-btn">Sign up</button>
+
+                <div class="form-divider">
+                    <span>or</span>
+                </div>
+
+                <!-- Google OAuth Registration Interface Button -->
+                <button type="button" class="google-signup-btn"
+                    onclick="alert('Redirecting to Google Sign-Up Services...')">
+                    <svg class="google-icon" viewBox="0 0 24 24" width="18" height="18"
+                        xmlns="http://www.w3.org/2000/svg">
+                        <path
+                            d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"
+                            fill="#4285F4" />
+                        <path
+                            d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z"
+                            fill="#34A853" />
+                        <path
+                            d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.06H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.94l2.85-2.22.81-.63z"
+                            fill="#FBBC05" />
+                        <path
+                            d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.06l3.66 2.84c.87-2.6 3.3-4.53 6.7-4.53z"
+                            fill="#EA4335" />
+                    </svg>
+                    <span>Sign up with Google</span>
+                </button>
+
+                <p class="login-footer-text">Already have an account? <a href="#">Log in</a></p>
+
+            </form>
+        </div>
+    </div>
+
+    <script>
+
+        const SUPABASE_URL = "https://rejaosaylldyhvbyhgxl.supabase.co";
+
+        const SUPABASE_ANON_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InJlamFvc2F5bGxkeWh2YnloZ3hsIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODEwMjE3MDUsImV4cCI6MjA5NjU5NzcwNX0.1GNinip2Qs923GaoVe6E2EGxp6ixnsJgF4bfDkH2K4A";
+
+        const supabaseClient =
+            supabase.createClient(
+                SUPABASE_URL,
+                SUPABASE_ANON_KEY
+            );
+
+        /* =========================
+           PASSWORD TOGGLE
+        ========================= */
+
+        const passwordToggle =
+            document.getElementById("passwordToggle");
+
+        const passwordInput =
+            document.getElementById("password");
+
+        const toggleIcon =
+            passwordToggle.querySelector("i");
+
+        passwordToggle.addEventListener("click", () => {
+
+            if (passwordInput.type === "password") {
+
+                passwordInput.type = "text";
+
+                toggleIcon.className =
+                    "fa-regular fa-eye";
+
+            } else {
+
+                passwordInput.type = "password";
+
+                toggleIcon.className =
+                    "fa-regular fa-eye-slash";
+            }
+        });
+
+        /* =========================
+           EMAIL SIGNUP
+        ========================= */
+
+        document
+            .getElementById("staffSignupForm")
+            .addEventListener("submit", async (e) => {
+
+                e.preventDefault();
+
+                const fullName =
+                    document.getElementById("fullName").value.trim();
+
+                const email =
+                    document.getElementById("email").value.trim();
+
+                const password =
+                    document.getElementById("password").value;
+
+                if (password.length < 6) {
+
+                    alert(
+                        "Password must be at least 6 characters."
+                    );
+
+                    return;
+                }
+
+                const { data, error } =
+                    await supabaseClient.auth.signUp({
+
+                        email: email,
+
+                        password: password,
+
+                        options: {
+
+                            emailRedirectTo:
+                                window.location.origin +
+                                "/staff_login.html",
+
+                            data: {
+
+                                full_name: fullName
+                            }
+                        }
+                    });
+
+                if (error) {
+
+                    alert(error.message);
+                    return;
+                }
+
+                if (data.user) {
+
+                    const { error: profileError } =
+                        await supabaseClient
+                            .from("staff_profiles")
+                            .insert([{
+
+                                id: data.user.id,
+
+                                full_name: fullName,
+
+                                email: email,
+
+                                role: "staff"
+                            }]);
+
+                    if (profileError) {
+
+                        console.error(profileError);
+                    }
+                }
+
+                alert(
+                    "Account created successfully.\n\nCheck your email and click the verification link before logging in."
+                );
+
+                window.location.href =
+                    "staff_login.html";
+            });
+
+        /* =========================
+           GOOGLE SIGNUP
+        ========================= */
+
+        document
+            .getElementById("googleSignupBtn")
+            .addEventListener("click", async () => {
+
+                const { error } =
+                    await supabaseClient.auth
+                        .signInWithOAuth({
+
+                            provider: "google",
+
+                            options: {
+
+                                redirectTo:
+                                    window.location.origin +
+                                    "/staff_dashboard.html"
+                            }
+                        });
+
+                if (error) {
+
+                    alert(error.message);
+                }
+            });
+
+    </script>
+</body>
+
+</html>

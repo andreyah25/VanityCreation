@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Verify Code - Vanity Creation</title>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link
+    href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,100..1000;1,9..40,100..1000&display=swap"
+    rel="stylesheet">
+
+  <link rel="stylesheet" href="verification_code.css">
+
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+</head>
+
+<body>
+
+  <div class="verify-wrapper">
+
+    <div class="top-accent-line"></div>
+
+    <h1 class="verify-heading">Verify Code</h1>
+    <p class="verify-subtext" id="status">Enter the verification code sent to your email.</p>
+
+    <div class="verify-card-container">
+
+      <form class="verify-form" id="verificationForm">
+
+        <div class="code-inputs-group">
+          <input type="text" maxlength="1" inputmode="numeric" required>
+          <input type="text" maxlength="1" inputmode="numeric" required>
+          <input type="text" maxlength="1" inputmode="numeric" required>
+          <input type="text" maxlength="1" inputmode="numeric" required>
+        </div>
+
+        <div class="resend-wrapper">
+          <p class="resend-text">Didn’t receive it?</p>
+          <a href="#" onclick="alert('New code sent')">Resend code</a>
+        </div>
+
+        <button type="submit" class="submit-verify-btn">Verify</button>
+
+      </form>
+
+      <button id="continueBtn" style="display:none; margin-top:20px;">
+        Continue to Dashboard
+      </button>
+
+    </div>
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
+  <div>
+    <input id="otp" placeholder="Enter OTP">
+  </div>
+
+  <button id="verifyBtn">Verify</button>
+
+  <p id="status"></p>
+
+  <script>
+    const supabaseClient = supabase.createClient(
+      "https://rejaosaylldyhvbyhgxl.supabase.co",
+      "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InJlamFvc2F5bGxkeWh2YnloZ3hsIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODEwMjE3MDUsImV4cCI6MjA5NjU5NzcwNX0.1GNinip2Qs923GaoVe6E2EGxp6ixnsJgF4bfDkH2K4A"
+    );
+
+    let userEmail = null;
+
+    /* =========================
+       GET USER SESSION
+    ========================= */
+    window.addEventListener("load", async () => {
+
+      const { data: { session } } =
+        await supabaseClient.auth.getSession();
+
+      if (!session) {
+        window.location.href = "staff_login.html";
+        return;
+      }
+
+      userEmail = session.user.email;
+
+      document.getElementById("status").innerText =
+        "OTP sent to your email (check inbox)";
+    });
+
+    /* =========================
+       VERIFY OTP
+    ========================= */
+    document.getElementById("verifyBtn").addEventListener("click", async () => {
+
+      const otp = document.getElementById("otp").value;
+
+      const { data, error } = await supabaseClient.auth.verifyOtp({
+        email: userEmail,
+        token: otp,
+        type: "email"
+      });
+
+      if (error) {
+        document.getElementById("status").innerText =
+          "Invalid OTP";
+        return;
+      }
+
+      // create/update staff profile
+      const user = data.user;
+
+      let { data: profile } = await supabaseClient
+        .from("staff_profiles")
+        .select("*")
+        .eq("id", user.id)
+        .single();
+
+      if (!profile) {
+        await supabaseClient.from("staff_profiles").insert({
+          id: user.id,
+          email: user.email,
+          role: "staff",
+          verified: false
+        });
+      }
+
+      document.getElementById("status").innerText =
+        "Verified! Waiting for admin approval...";
+
+      setTimeout(() => {
+        window.location.href = "staff_dashboard.html";
+      }, 1500);
+    });
+  </script>
+</body>
+
+</html>

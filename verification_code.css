@@ -1,0 +1,175 @@
+/* ==============================
+   BASE RESET (required)
+   ============================== */
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+html {
+    font-family: "DM Sans", sans-serif;
+    scroll-behavior: smooth;
+}
+
+body {
+    background-color: #1e292b;
+    min-height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+/* ==============================
+   WRAPPER
+   ============================== */
+
+.verify-wrapper {
+    width: 100%;
+    max-width: 630px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+/* ==============================
+   TOP LINE
+   ============================== */
+
+.top-accent-line {
+    width: 150px;
+    height: 2px;
+    background-color: #ffffff;
+    margin-bottom: 50px;
+    opacity: 0.9;
+}
+
+/* ==============================
+   HEADINGS
+   ============================== */
+
+.verify-heading {
+    color: #ffffff;
+    font-size: 52px;
+    font-weight: 500;
+    letter-spacing: -0.5px;
+    margin-bottom: 14px;
+    text-align: center;
+}
+
+.verify-subtext {
+    color: #a4b0b2;
+    font-size: 19px;
+    font-weight: 300;
+    margin-bottom: 50px;
+    text-align: center;
+    line-height: 1.4;
+}
+
+/* ==============================
+   CARD CONTAINER
+   ============================== */
+
+.verify-card-container {
+    background-color: #ffffff;
+    width: 100%;
+    border-radius: 4px;
+    padding: 65px 55px;
+    box-shadow: 0 25px 45px rgba(0, 0, 0, 0.12);
+}
+
+/* ==============================
+   FORM
+   ============================== */
+
+.verify-form {
+    display: flex;
+    flex-direction: column;
+}
+
+/* ==============================
+   CODE INPUT GRID
+   ============================== */
+
+.code-inputs-group {
+    display: flex;
+    justify-content: center;
+    gap: 30px;
+    margin-bottom: 40px;
+}
+
+.code-inputs-group input {
+    width: 78px;
+    height: 78px;
+    border: 1px solid #999;
+    border-radius: 6px;
+    text-align: center;
+    font-size: 28px;
+    font-weight: 500;
+    color: #222;
+    background: transparent;
+    outline: none;
+    font-family: "DM Sans", sans-serif;
+    transition: border-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+.code-inputs-group input:focus {
+    border-color: #1e292b;
+    box-shadow: 0 0 0 2px rgba(30, 41, 43, 0.1);
+}
+
+/* ==============================
+   RESEND SECTION
+   ============================== */
+
+.resend-wrapper {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 4px;
+    margin-bottom: 45px;
+}
+
+.resend-text {
+    color: #444;
+    font-size: 15px;
+}
+
+.resend-link {
+    color: #222;
+    font-size: 15px;
+    font-weight: 500;
+    text-decoration: underline;
+}
+
+.resend-link:hover {
+    opacity: 0.8;
+}
+
+/* ==============================
+   SUBMIT BUTTON
+   ============================== */
+
+.submit-verify-btn {
+    background-color: #1e292b;
+    color: #fff;
+    border: none;
+    padding: 16px;
+    font-size: 16px;
+    font-weight: 700;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: 0.2s ease;
+    width: 100%;
+    max-width: 440px;
+    margin: 0 auto;
+}
+
+.submit-verify-btn:hover {
+    background-color: #12191a;
+}
+
+.submit-verify-btn:active {
+    transform: scale(0.99);
+}
