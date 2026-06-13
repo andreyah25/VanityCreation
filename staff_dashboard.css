@@ -54,7 +54,7 @@ body{
 }
 
 .search-box input{
-    width:320px;
+    width:350px;
     height:40px;
     border:none;
     border-radius:3px;
@@ -84,14 +84,12 @@ body{
     text-overflow:ellipsis;
 }
 
-/* LAYOUT */
 
 .dashboard-wrapper{
     display:flex;
     height:calc(100vh - 70px);
 }
 
-/* SIDEBAR */
 
 .sidebar{
     width:230px;
@@ -130,10 +128,11 @@ body{
 }
 
 .logout-btn{
-    border:1px solid #970909;
+    border:1px solid #ffb5b5;
     background:white;
-    color:#ebe3e3;
+    color:#e53935;
     height:42px;
+    padding: 12px;
     border-radius:4px;
     cursor:pointer;
     font-weight:600;

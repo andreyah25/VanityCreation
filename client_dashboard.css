@@ -17,27 +17,27 @@ body {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    padding: 0 24px;
+    padding: 0 25px;
 }
 
 .logo-area {
     display: flex;
     align-items: center;
-    gap: 10px;
+    gap: 12px;
     color: white;
-    font-size: 12px;
+    font-size: 13px;
 }
 
 .logo-box {
-    width: 35px;
-    height: 35px;
+    width: 34px;
+    height: 34px;
     background: white;
 }
 
 .top-right {
     display: flex;
     align-items: center;
-    gap: 16px;
+    gap: 20px;
 }
 
 .top-search {
@@ -46,25 +46,28 @@ body {
 
 .top-search input {
     width: 350px;
-    height: 38px;
+    height: 40px;
     border: none;
-    border-radius: 4px;
-    padding-left: 35px;
+    border-radius: 3px;
+    padding-left: 40px;
     outline: none;
 }
 
 .top-search i {
     position: absolute;
-    left: 12px;
+    left: 14px;
     top: 50%;
     transform: translateY(-50%);
     color: #999;
 }
 
 .avatar {
-    width: 24px;
-    height: 24px;
+    width: 42px;
+    height: 42px;
+    border-radius: 50%;
+    object-fit: cover;
     background: white;
+    border:2px;
     border-radius: 50%;
 }
 
@@ -83,7 +86,7 @@ body {
     display: flex;
     flex-direction: column;
     justify-content: space-between;
-    padding: 24px;
+    padding: 25px 18px;
 }
 
 .menu-item {
@@ -111,16 +114,12 @@ body {
 .logout-btn {
     border: 1px solid #ffb5b5;
     background: white;
-    color: #e53935;
+    color: #312e2e;
     padding: 12px;
     border-radius: 4px;
     cursor: pointer;
     font-weight: 600;
 }
-
-/* ==========================
-   CONTENT
-========================== */
 
 .content {
     flex: 1;
