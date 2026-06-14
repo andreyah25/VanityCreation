@@ -26,6 +26,7 @@ body {
     gap: 12px;
     color: white;
     font-size: 13px;
+    font-weight: 500;
 }
 
 .logo-box {
@@ -51,7 +52,7 @@ body {
     border-radius: 3px;
     padding-left: 40px;
     outline: none;
-}
+    FONT-SIZE: 14px;}
 
 .top-search i {
     position: absolute;
@@ -112,15 +113,30 @@ body {
 }
 
 .logout-btn {
-    border: 1px solid #ffb5b5;
-    background: white;
-    color: #312e2e;
-    padding: 12px;
-    border-radius: 4px;
-    cursor: pointer;
-    font-weight: 600;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    width: 100%;
+    padding: 10px;
+    background-color: #ffffff;
+    border: 1px solid #fecaca;
+    border-radius: 6px;
+    color: #dc2626;
+    text-decoration: none;
+    font-size: 14px;
+    font-weight: 500;
+    transition: background 0.2s;
 }
 
+.logout-icon {
+    width: 18px;
+    height: 18px;
+}
+
+.logout-btn:hover{
+    background:#fff3f3;
+}
 .content {
     flex: 1;
     padding: 35px;

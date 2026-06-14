@@ -127,15 +127,26 @@ body{
     color:rgb(221, 219, 219);
 }
 
-.logout-btn{
-    border:1px solid #ffb5b5;
-    background:white;
-    color:#e53935;
-    height:42px;
-    padding: 12px;
-    border-radius:4px;
-    cursor:pointer;
-    font-weight:600;
+.logout-btn {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    width: 100%;
+    padding: 10px;
+    background-color: #ffffff;
+    border: 1px solid #fecaca;
+    border-radius: 6px;
+    color: #dc2626;
+    text-decoration: none;
+    font-size: 14px;
+    font-weight: 500;
+    transition: background 0.2s;
+}
+
+.logout-icon {
+    width: 18px;
+    height: 18px;
 }
 
 .logout-btn:hover{
