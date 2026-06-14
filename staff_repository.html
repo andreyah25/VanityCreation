@@ -1,0 +1,326 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Vanity Creation Photo Studio - Staff Repository Workspace</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,100..1000;1,9..40,100..1000&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body class="default-body">
+
+    <header class="top-navbar">
+        <div class="header-logo-area">
+            <div class="logo-square-mock"></div>
+            <span class="website-title">VANITY CREATION</span>
+        </div>
+        <div class="header-actions-area">
+            <div class="search-bar-wrapper">
+                <i class="fa-solid fa-magnifying-glass search-icon"></i>
+                <input type="text" placeholder="Search photos by tag, email, or file name">
+            </div>
+            <div class="profile-avatar-circle"></div>
+            <link rel="stylesheet" href="staff_repository.css">
+        </div>
+    </header>
+
+    <div class="workspace-container">
+        
+        <nav class="sidebar-nav">
+            <div class="nav-links-wrapper">
+                <a href="staff_dashboard.html" class="nav-item">
+                    <i class="fa-solid fa-chart-pie nav-icon"></i>
+                    <span>Dashboard</span>
+                </a>
+                <a href="client_dashboard.html" class="nav-item">
+                    <i class="fa-solid fa-users nav-icon"></i>
+                    <span>Clients</span>
+                </a>
+                <a href="staff_repository.html" class="nav-item active">
+                    <i class="fa-solid fa-folder-open nav-icon"></i>
+                    <span>Repository</span>
+                </a>
+                <a href="staff_payment.html" class="nav-item">
+                    <i class="fa-solid fa-credit-card nav-icon"></i>
+                    <span>Payments</span>
+                </a>
+                <a href="#" class="nav-item">
+                    <i class="fa-solid fa-user nav-icon"></i>
+                    <span>Profile</span>
+                </a>
+                <a href="#" class="nav-item">
+                    <i class="fa-solid fa-gear nav-icon"></i>
+                    <span>Settings</span>
+                </a>
+            </div>
+            <div class="sidebar-footer">
+                <a href="#" class="logout-btn">
+                    <i class="fa-solid fa-right-from-bracket"></i>
+                    <span>Log out</span>
+                </a>
+            </div>
+        </nav>
+
+        <main class="main-dashboard-panel">
+            
+            <div class="repository-workspace-header-bar">
+                <div class="content-header-text">
+                    <h1 class="main-heading">Repository</h1>
+                    <p class="sub-heading">Manage and organize folders and images stored in your workspace.</p>
+                </div>
+                
+                <div class="add-new-dropdown-anchor-wrapper">
+                    <button class="add-new-trigger-main-btn" onclick="toggleAddNewMenu(event)">
+                        <i class="fa-solid fa-plus"></i> Add New
+                    </button>
+                    
+                    <div class="add-new-floating-menu-box" id="addNewMenuBox">
+                        <button class="dropdown-action-row-item" onclick="triggerPhotoUploadAction()">
+                            <i class="fa-solid fa-cloud-arrow-up dropdown-item-icon"></i>
+                            <span>Upload Photos</span>
+                        </button>
+                        <button class="dropdown-action-row-item" onclick="openCreateFolderModal()">
+                            <i class="fa-regular fa-folder dropdown-item-icon"></i>
+                            <span>Create New Folder</span>
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <div class="repository-filters-control-strip">
+                <div class="filter-dropdown-select-box">
+                    <select class="studio-native-select-element">
+                        <option>All tags</option>
+                        <option>Wedding Tags</option>
+                        <option>Portrait Tags</option>
+                    </select>
+                    <i class="fa-solid fa-chevron-down select-arrow-overlay-icon"></i>
+                </div>
+                
+                <div class="filter-dropdown-select-box">
+                    <select class="studio-native-select-element">
+                        <option>All Events</option>
+                        <option>Folder Format View</option>
+                    </select>
+                    <i class="fa-solid fa-chevron-down select-arrow-overlay-icon"></i>
+                </div>
+                
+                <div class="filter-dropdown-select-box">
+                    <select class="studio-native-select-element">
+                        <option>Sort By</option>
+                        <option>Date Modified</option>
+                        <option>Alphabetical</option>
+                    </select>
+                    <i class="fa-solid fa-chevron-down select-arrow-overlay-icon"></i>
+                </div>
+            </div>
+
+            <div class="repository-sub-search-actions-bar">
+                <div class="repo-inline-search-input-wrapper">
+                    <i class="fa-solid fa-magnifying-glass repo-search-icon"></i>
+                    <input type="text" placeholder="Search repository" id="repoFolderSearchInput" onkeyup="filterRepositoryGrid()">
+                </div>
+                <button class="repo-utility-filter-btn">
+                    <i class="fa-solid fa-sliders"></i> Filter
+                </button>
+            </div>
+
+            <div class="repository-folders-grid-display" id="repositoryGrid">
+                <div class="folder-card-wrapper-node">
+                    <div class="folder-graphic-box"><i class="fa-solid fa-folder"></i></div>
+                    <span class="folder-label-title-text">Wedding</span>
+                </div>
+                <div class="folder-card-wrapper-node">
+                    <div class="folder-graphic-box"><i class="fa-solid fa-folder"></i></div>
+                    <span class="folder-label-title-text">Reception</span>
+                </div>
+                <div class="folder-card-wrapper-node">
+                    <div class="folder-graphic-box"><i class="fa-solid fa-folder"></i></div>
+                    <span class="folder-label-title-text">Getting Ready</span>
+                </div>
+                <div class="folder-card-wrapper-node">
+                    <div class="folder-graphic-box"><i class="fa-solid fa-folder"></i></div>
+                    <span class="folder-label-title-text">Group Photo</span>
+                </div>
+                <div class="folder-card-wrapper-node">
+                    <div class="folder-graphic-box"><i class="fa-solid fa-folder"></i></div>
+                    <span class="folder-label-title-text">Details</span>
+                </div>
+                <div class="folder-card-wrapper-node">
+                    <div class="folder-graphic-box"><i class="fa-solid fa-folder"></i></div>
+                    <span class="folder-label-title-text">Highlights</span>
+                </div>
+                <div class="folder-card-wrapper-node">
+                    <div class="folder-graphic-box"><i class="fa-solid fa-folder"></i></div>
+                    <span class="folder-label-title-text">portraits</span>
+                </div>
+                <div class="folder-card-wrapper-node">
+                    <div class="folder-graphic-box"><i class="fa-solid fa-folder"></i></div>
+                    <span class="folder-label-title-text">Ceremony</span>
+                </div>
+                <div class="folder-card-wrapper-node">
+                    <div class="folder-graphic-box"><i class="fa-solid fa-folder"></i></div>
+                    <span class="folder-label-title-text">Uncategorized</span>
+                </div>
+            </div>
+
+            <div class="gallery-pagination-control-bar">
+                <button class="pagination-arrow-btn" id="repoPrevPageBtn" onclick="navigateRepoPage(-1)">
+                    <i class="fa-solid fa-chevron-left"></i>
+                </button>
+                <div class="pagination-pages-list-wrapper" id="repoPaginationWrapper">
+                    </div>
+                <button class="pagination-arrow-btn" id="repoNextPageBtn" onclick="navigateRepoPage(1)">
+                    <i class="fa-solid fa-chevron-right"></i>
+                </button>
+            </div>
+        </main>
+    </div>
+
+    <div class="modal-backdrop-overlay" id="createFolderModalBackdrop">
+        <div class="add-client-modal-card">
+            
+            <div class="modal-header-strip">
+                <i class="fa-solid fa-folder-plus modal-header-icon"></i>
+                <h2>New Folder</h2>
+                <button class="modal-close-x-btn" onclick="closeCreateFolderModal()">&times;</button>
+            </div>
+            
+            <form class="modal-input-form-body" onsubmit="handleFolderGenerationSubmit(event)">
+                <div class="form-field-row">
+                    <input type="text" value="Untitled Folder" class="studio-text-input" id="folderNameTextInput" required onclick="this.select()">
+                </div>
+                
+                <div class="modal-double-action-buttons-strip">
+                    <button type="button" class="modal-split-secondary-btn" onclick="closeCreateFolderModal()">Cancel</button>
+                    <button type="submit" class="modal-split-primary-btn">Create</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <script>
+        let currentRepoActivePage = 1;
+        const totalTerminalPagesCount = 30;
+
+        // Toggle state parameters for context menus options panel dropdown
+        function toggleAddNewMenu(event) {
+            event.stopPropagation();
+            const menu = document.getElementById('addNewMenuBox');
+            menu.classList.toggle('visible-active-dropdown');
+        }
+
+        function openCreateFolderModal() {
+            // Dismiss floating action menu option blocks cleanly before launching dialog modal container frames
+            document.getElementById('addNewMenuBox').classList.remove('visible-active-dropdown');
+            document.getElementById('createFolderModalBackdrop').classList.add('visible-modal');
+        }
+
+        function closeCreateFolderModal() {
+            document.getElementById('createFolderModalBackdrop').classList.remove('visible-modal');
+        }
+
+        function triggerPhotoUploadAction() {
+            document.getElementById('addNewMenuBox').classList.remove('visible-active-dropdown');
+            alert("Upload Photos script engine route activated.");
+        }
+
+        function handleFolderGenerationSubmit(event) {
+            event.preventDefault();
+            const targetFolderName = document.getElementById('folderNameTextInput').value;
+            alert("Generating new instance node directory inside repository space named: " + targetFolderName);
+            closeCreateFolderModal();
+        }
+
+        // Click tracking event listener logic blocks to auto close drop widgets gracefully on root click events
+        window.addEventListener('click', function(event) {
+            const menu = document.getElementById('addNewMenuBox');
+            if (menu && menu.classList.contains('visible-active-dropdown')) {
+                menu.classList.remove('visible-active-dropdown');
+            }
+            
+            const folderBackdrop = document.getElementById('createFolderModalBackdrop');
+            if (event.target === folderBackdrop) {
+                closeCreateFolderModal();
+            }
+        });
+
+        // Dynamic page turning indicators loop builder matrix rules tracker numbers 1 to 30 
+        function renderRepoPaginationControlsTrack() {
+            const wrapperNode = document.getElementById('repoPaginationWrapper');
+            wrapperNode.innerHTML = "";
+
+            let indicatorsArray = [];
+            if (currentRepoActivePage <= 4) {
+                indicatorsArray = [1, 2, 3, 4, 5, '...', totalTerminalPagesCount];
+            } else if (currentRepoActivePage >= totalTerminalPagesCount - 3) {
+                indicatorsArray = [1, '...', totalTerminalPagesCount - 4, totalTerminalPagesCount - 3, totalTerminalPagesCount - 2, totalTerminalPagesCount - 1, totalTerminalPagesCount];
+            } else {
+                indicatorsArray = [1, '...', currentRepoActivePage - 1, currentRepoActivePage, currentRepoActivePage + 1, '...', totalTerminalPagesCount];
+            }
+
+            indicatorsArray.forEach(token => {
+                if(token === '...') {
+                    const dotsSpan = document.createElement('span');
+                    dotsSpan.className = "pagination-el-ellipsis";
+                    dotsSpan.innerText = "...";
+                    wrapperNode.appendChild(dotsSpan);
+                } else {
+                    const numBtn = document.createElement('button');
+                    numBtn.className = `pagination-number-node ${token === currentRepoActivePage ? 'active-page-state' : ''}`;
+                    numBtn.innerText = token;
+                    numBtn.onclick = function() {
+                        jumpToSpecificRepoPage(token);
+                    };
+                    wrapperNode.appendChild(numBtn);
+                }
+            });
+
+            document.getElementById('repoPrevPageBtn').disabled = (currentRepoActivePage === 1);
+            document.getElementById('repoNextPageBtn').disabled = (currentRepoActivePage === totalTerminalPagesCount);
+        }
+
+        function navigateRepoPage(deltaValue) {
+            const targetValue = currentRepoActivePage + deltaValue;
+            if(targetValue >= 1 && targetValue <= totalTerminalPagesCount) {
+                currentRepoActivePage = targetValue;
+                renderRepoPaginationControlsTrack();
+                // Real production logic would pass the page number instance node to fetch new asset data records here
+            }
+        }
+
+        function jumpToSpecificRepoPage(assignedPageNum) {
+            currentRepoActivePage = parseInt(assignedPageNum);
+            renderRepoPaginationControlsTrack();
+        }
+
+        // Inline live filter query controller tracking matching name inputs to folder items titles
+        function filterRepositoryGrid() {
+            const input = document.getElementById('repoFolderSearchInput');
+            const filterValue = input.value.toLowerCase();
+            const gridContainer = document.getElementById('repositoryGrid');
+            const folderNodes = gridContainer.getElementsByClassName('folder-card-wrapper-node');
+
+            for (let i = 0; i < folderNodes.length; i++) {
+                const titleSpan = folderNodes[i].getElementsByClassName('folder-label-title-text')[0];
+                if (titleSpan) {
+                    const innerTextValue = titleSpan.textContent || titleSpan.innerText;
+                    if (innerTextValue.toLowerCase().indexOf(filterValue) > -1) {
+                        folderNodes[i].style.display = "";
+                    } else {
+                        folderNodes[i].style.display = "none";
+                    }
+                }
+            }
+        }
+
+        // Initialize tracking states loops once DOM setup completes safely
+        document.addEventListener("DOMContentLoaded", function() {
+            renderRepoPaginationControlsTrack();
+        });
+    </script>
+</body>
+</html>
