@@ -5,54 +5,67 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Customer Login - Access Your Photos</title>
+
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link
-        href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,100..1000;1,9..40,100..1000&display=swap"
-        rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=DM+Sans&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
     <link rel="stylesheet" href="staff_login.css">
 </head>
 
 <body>
 
     <div class="login-wrapper">
+
         <div class="top-accent-line"></div>
 
         <h1 class="welcome-heading">Access Your Photos</h1>
-        <p class="welcome-subtext">Continue to your image repository by signing in to your account.</p>
+
+        <p class="welcome-subtext">
+            Continue to your image repository by signing in to your account.
+        </p>
 
         <div class="login-card-container">
-            <form class="login-form" id="customerLoginForm">
 
+            <form id="customerLoginForm" class="login-form">
+
+                <!-- EMAIL -->
                 <div class="input-group">
-                    <input type="email" id="email" required autocomplete="email" placeholder=" ">
-                    <label for="email">Email Address</label>
+                    <input type="email" id="email" required placeholder=" ">
+                    <label>Email Address</label>
                 </div>
 
+                <!-- PASSWORD -->
                 <div class="input-group password-group">
-                    <input type="password" id="password" required autocomplete="current-password" placeholder=" ">
-                    <label for="password">Password</label>
-                    <button type="button" class="toggle-password" id="passwordToggle"
-                        aria-label="Toggle password visibility">
+                    <input type="password" id="password" required placeholder=" ">
+                    <label>Password</label>
+
+                    <button type="button" class="toggle-password" id="passwordToggle">
                         <i class="fa-regular fa-eye-slash"></i>
                     </button>
                 </div>
 
+                <!-- FORGOT -->
                 <div class="forgot-password-wrapper">
                     <a href="#" class="forgot-link">Forgot Password</a>
                 </div>
 
-                <button type="submit" class="submit-login-btn">Log in</button>
+                <!-- LOGIN BUTTON (MATCH CSS CLASS) -->
+                <button type="submit" class="submit-login-btn">
+                    Log in
+                </button>
 
+                <!-- DIVIDER -->
                 <div class="form-divider">
                     <span>or</span>
                 </div>
 
-                <button type="button" class="google-login-btn"
-                    onclick="alert('Connecting to customer Google identity verification provider...')">
-                    <svg class="google-icon" viewBox="0 0 24 24" width="18" height="18"
-                        xmlns="http://www.w3.org/2000/svg">
+                <!-- GOOGLE LOGIN -->
+                <button type="button" id="googleLoginBtn" class="google-login-btn">
+                    <svg class="google-icon" viewBox="0 0 24 24" width="18" height="18">
                         <path
                             d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"
                             fill="#4285F4" />
@@ -70,29 +83,77 @@
                 </button>
 
             </form>
+
         </div>
+
     </div>
 
     <script>
-        const passwordToggle = document.getElementById('passwordToggle');
-        const passwordInput = document.getElementById('password');
-        const toggleIcon = passwordToggle.querySelector('i');
-        const customerLoginForm = document.getElementById('customerLoginForm');
+        /* FIX SUPABASE */
+        const SUPABASE_URL = "https://rejaosaylldyhvbyhgxl.supabase.co";
 
-        passwordToggle.addEventListener('click', () => {
-            if (passwordInput.type === 'password') {
-                passwordInput.type = 'text';
-                toggleIcon.className = 'fa-regular fa-eye';
-            } else {
-                passwordInput.type = 'password';
-                toggleIcon.className = 'fa-regular fa-eye-slash';
+        const SUPABASE_ANON_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InJlamFvc2F5bGxkeWh2YnloZ3hsIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODEwMjE3MDUsImV4cCI6MjA5NjU5NzcwNX0.1GNinip2Qs923GaoVe6E2EGxp6ixnsJgF4bfDkH2K4A";
+
+        const supabaseClient =
+            supabase.createClient(
+                SUPABASE_URL,
+                SUPABASE_ANON_KEY
+            );
+        /* SAVE USER */
+        async function saveUser(user) {
+            if (!user) return;
+
+            const { error } = await supabaseClient.from("profiles").upsert({
+                id: user.id,
+                email: user.email,
+                full_name: user.user_metadata?.name || "",
+                avatar_url: user.user_metadata?.avatar_url || ""
+            });
+
+            if (error) console.log("DB Error:", error.message);
+        }
+
+        /* EMAIL LOGIN */
+        document.getElementById("customerLoginForm").addEventListener("submit", async (e) => {
+            e.preventDefault();
+
+            const email = document.getElementById("email").value;
+            const password = document.getElementById("password").value;
+
+            const { data, error } = await supabaseClient.auth.signInWithPassword({
+                email,
+                password
+            });
+
+            if (error) {
+                alert("Login failed: " + error.message);
+                return;
+            }
+
+            await saveUser(data.user);
+
+            alert("Login successful!");
+            window.location.href = "generated_link_page.html";
+        });
+
+        /* GOOGLE LOGIN */
+        document.getElementById("googleLoginBtn").addEventListener("click", async () => {
+            const { error } = await supabaseClient.auth.signInWithOAuth({
+                provider: "google",
+                options: {
+                    redirectTo: window.location.origin + "/generated_link_page.html"
+                }
+            });
+
+            if (error) {
+                alert(error.message);
             }
         });
 
-        customerLoginForm.addEventListener('submit', (event) => {
-            event.preventDefault();
-            const customerEmail = document.getElementById('email').value;
-            alert(`Customer authorization request received for repository target: ${customerEmail}`);
+        /* PASSWORD TOGGLE */
+        document.getElementById("passwordToggle").addEventListener("click", () => {
+            const pass = document.getElementById("password");
+            pass.type = pass.type === "password" ? "text" : "password";
         });
     </script>
 </body>
