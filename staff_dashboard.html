@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="en">
 
@@ -168,7 +169,7 @@
 
             try {
 
-                // Handle OAuth errors
+               
                 const params = new URLSearchParams(window.location.search);
 
                 if (params.get("error")) {
@@ -177,7 +178,7 @@
                     return;
                 }
 
-                // Check session
+             
                 const {
                     data: { session }
                 } = await supabaseClient.auth.getSession();
@@ -200,7 +201,6 @@
                     console.error(error);
                 }
 
-                // Create profile if first login
                 if (!profile) {
 
                     const { data: newProfile, error: insertError } =
@@ -230,7 +230,7 @@
                     profile = newProfile;
                 }
 
-                // Admin approval check
+                
                 if (profile.verified === false) {
                     alert("Waiting for admin approval");
                     window.location.href = "verification_code.html";
@@ -269,7 +269,7 @@
                 document.getElementById("totalCustomers")
                     .textContent = customers || 0;
 
-                // Folders
+            
                 const { count: folders } =
                     await supabaseClient
                         .from("folders")
@@ -279,7 +279,6 @@
                 document.getElementById("totalFolders")
                     .textContent = folders || 0;
 
-                // Photos
                 const { count: photos } =
                     await supabaseClient
                         .from("photos")
@@ -289,7 +288,7 @@
                 document.getElementById("totalPhotos")
                     .textContent = photos || 0;
 
-                // Active Clients
+              
                 const { count: active } =
                     await supabaseClient
                         .from("clients")
@@ -300,7 +299,7 @@
                 document.getElementById("activeClients")
                     .textContent = active || 0;
 
-                // Expired Clients
+              
                 const { count: expired } =
                     await supabaseClient
                         .from("clients")

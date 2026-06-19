@@ -1,0 +1,4 @@
+{
+  "deno.enable": true,
+  "json.schemaDownload.enable": false
+}

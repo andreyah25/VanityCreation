@@ -1,0 +1,78 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Forgot Password - Vanity Creation</title>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="staff_forgot.pw.css">
+</head>
+<body>
+
+    <div class="login-wrapper">
+
+        <div class="top-accent-line"></div>
+
+        <h1 class="welcome-heading">Forgot Password</h1>
+        <p class="welcome-subtext">Create a new password for your account.</p>
+
+        <div class="login-card-container">
+
+            <form class="login-form" id="forgotPasswordForm" onsubmit="event.preventDefault();">
+
+                <div class="input-group">
+                    <input type="email" id="email" autocomplete="email" required placeholder=" ">
+                    <label for="email">Email Address</label>
+                </div>
+
+                <div class="input-group password-group">
+                    <input type="password" id="newPassword" required placeholder=" ">
+                    <label for="newPassword">New Password</label>
+                    <button type="button" class="toggle-password">
+                        <i class="fa-regular fa-eye-slash"></i>
+                    </button>
+                </div>
+
+                <div class="input-group password-group">
+                    <input type="password" id="confirmPassword" required placeholder=" ">
+                    <label for="confirmPassword">Confirm Password</label>
+                    <button type="button" class="toggle-password">
+                        <i class="fa-regular fa-eye-slash"></i>
+                    </button>
+                </div>
+
+                <button type="submit" class="submit-login-btn">
+                    Reset Password
+                </button>
+
+            </form>
+
+        </div>
+
+    </div>
+
+    <script>
+        document.querySelectorAll('.toggle-password').forEach(button => {
+            button.addEventListener('click', () => {
+                const inputField = button.parentElement.querySelector('input');
+                const toggleIcon = button.querySelector('i');
+
+                if (inputField.type === 'password') {
+                    inputField.type = 'text';
+                    toggleIcon.className = 'fa-regular fa-eye';
+                } else {
+                    inputField.type = 'password';
+                    toggleIcon.className = 'fa-regular fa-eye-slash';
+                }
+            });
+        });
+    </script>
+
+</body>
+</html>

@@ -89,7 +89,6 @@
     </div>
 
     <script>
-        /* FIX SUPABASE */
         const SUPABASE_URL = "https://rejaosaylldyhvbyhgxl.supabase.co";
 
         const SUPABASE_ANON_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InJlamFvc2F5bGxkeWh2YnloZ3hsIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODEwMjE3MDUsImV4cCI6MjA5NjU5NzcwNX0.1GNinip2Qs923GaoVe6E2EGxp6ixnsJgF4bfDkH2K4A";
@@ -99,7 +98,6 @@
                 SUPABASE_URL,
                 SUPABASE_ANON_KEY
             );
-        /* SAVE USER */
         async function saveUser(user) {
             if (!user) return;
 
@@ -136,7 +134,6 @@
             window.location.href = "generated_link_page.html";
         });
 
-        /* GOOGLE LOGIN */
         document.getElementById("googleLoginBtn").addEventListener("click", async () => {
             const { error } = await supabaseClient.auth.signInWithOAuth({
                 provider: "google",

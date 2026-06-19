@@ -1,463 +1,325 @@
+
 <!DOCTYPE html>
 <html lang="en">
 
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Vanity Creation Photo Studio - Staff Repository Workspace</title>
+    <title>Repository</title>
+
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link
-        href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,100..1000;1,9..40,100..1000&display=swap"
-        rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@300;400;500;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+    <link rel="stylesheet" href="staff_dashboard.css">
+    <link rel="stylesheet" href="client_dashboard.css">
     <link rel="stylesheet" href="staff_repository.css">
 </head>
 
-<body class="default-body">
+<body>
 
     <header class="top-navbar">
-        <div class="header-logo-area">
-            <div class="logo-square-mock"></div>
-            <span class="website-title">VANITY CREATION</span>
+        <div class="logo-section">
+            <div class="logo-box"></div>
+            <span>VANITY CREATION</span>
         </div>
-        <div class="header-actions-area">
-            <div class="search-bar-wrapper">
-                <i class="fa-solid fa-magnifying-glass search-icon"></i>
+
+        <div class="navbar-right">
+            <div class="search-box">
+                <i class="fa-solid fa-magnifying-glass"></i>
                 <input type="text" placeholder="Search photos by tag, email, or file name">
             </div>
-            <div class="profile-avatar-circle"></div>
+            <div class="user-profile">
+                <img id="userAvatar" class="avatar" src="https://via.placeholder.com/42" alt="Profile">
+                <span id="userName">Loading...</span>
+            </div>
         </div>
     </header>
 
-    <div class="workspace-container">
+    <div class="dashboard-wrapper">
 
-        <nav class="sidebar-nav">
-            <div class="nav-links-wrapper">
-                <a href="staff_dashboard.html" class="nav-item">
+        <aside class="sidebar">
+            <nav>
+                <a href="staff_dashboard.html">
                     <i class="fa-solid fa-table-cells-large"></i>
-                    <span>Home</span>
+                    Home
                 </a>
-                <a href="client_dashboard.html" class="nav-item">
-                    <i class="fa-solid fa-users nav-icon"></i>
-                    <span>Clients</span>
+                <a href="client_dashboard.html">
+                    <i class="fa-solid fa-users"></i>
+                    Clients
                 </a>
-                <a href="staff_repository.html" class="nav-item active">
-                    <i class="fa-solid fa-boook"></i>
-                    <span>Repository</span>
+                <a href="staff_repository.html" class="active">
+                    <i class="fa-solid fa-book"></i>
+                    Repository
                 </a>
-                <a href="staff_payment.html" class="nav-item">
-                    <i class="fa-solid fa-credit-card nav-icon"></i>
-                    <span>Payments</span>
+                <a href="staff_payment.html">
+                    <i class="fa-solid fa-credit-card"></i>
+                    Payments
                 </a>
-                <a href="#" class="nav-item">
-                    <i class="fa-solid fa-user nav-icon"></i>
-                    <span>Profile</span>
+                <a href="#">
+                    <i class="fa-solid fa-user"></i>
+                    Profile
                 </a>
-                <a href="#" class="nav-item">
-                    <i class="fa-solid fa-gear nav-icon"></i>
-                    <span>Settings</span>
+                <a href="#">
+                    <i class="fa-solid fa-gear"></i>
+                    Settings
                 </a>
-            </div>
-            <div class="sidebar-footer">
-                <a href="#" class="logout-btn">
-                    <i class="fa-solid fa-right-from-bracket"></i>
-                    <span>Log out</span>
-                </a>
-            </div>
-        </nav>
+            </nav>
 
-        <main class="main-dashboard-panel">
+            <a href="landing_page.html" class="logout-btn" id="logoutBtn">
+                <i class="fa-solid fa-arrow-right-from-bracket logout-icon"></i>
+                <span>Log out</span>
+            </a>
+        </aside>
 
-            <div class="repository-workspace-header-bar">
-                <div class="content-header-text">
-                    <h1 class="main-heading">Repository</h1>
-                    <p class="sub-heading">Manage and organize folders and images stored in your workspace.</p>
+        <main class="content">
+            
+            <div class="repo-top-header-block">
+                <div class="page-header">
+                    <h1>Repository</h1>
+                    <p>Manage and organize folders and images stored in your workspace.</p>
                 </div>
-
-                <div class="add-new-dropdown-anchor-wrapper">
-                    <button class="add-new-trigger-main-btn" onclick="toggleAddNewMenu(event)">
-                        <i class="fa-solid fa-plus"></i> Add New
+                
+                <div class="filter-dropdown-wrapper">
+                    <button class="add-new-client-btn" id="addNewDropdownTrigger">
+                        <i class="fa-solid fa-plus"></i>
+                        Add New
                     </button>
-
-                    <div class="add-new-floating-menu-box" id="addNewMenuBox">
-                        <button class="dropdown-action-row-item" onclick="triggerPhotoUploadAction()">
-                            <i class="fa-solid fa-cloud-arrow-up dropdown-item-icon"></i>
+                    <div class="add-new-dropdown-box" id="addNewDropdownMenu">
+                        <button id="uploadPhotosActionOption">
+                            <i class="fa-solid fa-cloud-arrow-up"></i>
                             <span>Upload Photos</span>
                         </button>
-                        <button class="dropdown-action-row-item" onclick="openCreateFolderModal()">
-                            <i class="fa-regular fa-folder dropdown-item-icon"></i>
+                        <button id="createFolderActionOption">
+                            <i class="fa-regular fa-folder"></i>
                             <span>Create New Folder</span>
                         </button>
                     </div>
                 </div>
             </div>
 
-            <div class="repository-filters-control-strip">
-                <div class="filter-dropdown-select-box">
-                    <select class="studio-native-select-element">
-                        <option>All tags</option>
-                        <option>Wedding Tags</option>
-                        <option>Portrait Tags</option>
-                    </select>
-                    <i class="fa-solid fa-chevron-down select-arrow-overlay-icon"></i>
+            <div class="repo-sub-actions-container">
+                <div class="repo-filter-selects-group">
+                    <div class="repo-select-wrapper">
+                        <select>
+                            <option>All tags</option>
+                        </select>
+                        <i class="fa-solid fa-chevron-down select-arrow"></i>
+                    </div>
+                    <div class="repo-select-wrapper">
+                        <select>
+                            <option>All events</option>
+                        </select>
+                        <i class="fa-solid fa-chevron-down select-arrow"></i>
+                    </div>
+                    <div class="repo-select-wrapper">
+                        <select>
+                            <option>Sort by:</option>
+                        </select>
+                        <i class="fa-solid fa-chevron-down select-arrow"></i>
+                    </div>
                 </div>
 
-                <div class="filter-dropdown-select-box">
-                    <select class="studio-native-select-element">
-                        <option>All Events</option>
-                        <option>Folder Format View</option>
-                    </select>
-                    <i class="fa-solid fa-chevron-down select-arrow-overlay-icon"></i>
-                </div>
-
-                <div class="filter-dropdown-select-box">
-                    <select class="studio-native-select-element">
-                        <option>Sort By</option>
-                        <option>Date Modified</option>
-                        <option>Alphabetical</option>
-                    </select>
-                    <i class="fa-solid fa-chevron-down select-arrow-overlay-icon"></i>
+                <div class="client-actions-row">
+                    <div class="table-search-box">
+                        <input type="text" id="repoFolderSearchInput" placeholder="Search repository...">
+                        <i class="fa-solid fa-magnifying-glass"></i>
+                    </div>
                 </div>
             </div>
 
-            <div class="repository-sub-search-actions-bar">
-                <div class="repo-inline-search-input-wrapper">
-                    <i class="fa-solid fa-magnifying-glass repo-search-icon"></i>
-                    <input type="text" placeholder="Search repository" id="repoFolderSearchInput"
-                        onkeyup="filterRepositoryGrid()">
+            <div class="ui-table-card-panel repo-grid-card-panel">
+                <div class="repo-folders-grid-panel" id="repositoryFoldersGrid">
+                    <div class="empty-repo-message">Loading active directories...</div>
                 </div>
-                <button class="repo-utility-filter-btn">
-                    <i class="fa-solid fa-sliders"></i> Filter
-                </button>
             </div>
 
-            <div class="repository-folders-grid-display" id="repositoryGrid">
-
-                <div class="empty-repository">
-                    No folders created yet.
-                </div>
-
-            </div>
+        </main>
     </div>
 
-    <div class="gallery-pagination-control-bar">
-        <button class="pagination-arrow-btn" id="repoPrevPageBtn" onclick="navigateRepoPage(-1)">
-            <i class="fa-solid fa-chevron-left"></i>
-        </button>
-        <div class="pagination-pages-list-wrapper" id="repoPaginationWrapper">
-        </div>
-        <button class="pagination-arrow-btn" id="repoNextPageBtn" onclick="navigateRepoPage(1)">
-            <i class="fa-solid fa-chevron-right"></i>
-        </button>
-    </div>
-    </main>
-    </div>
-
-    <div class="modal-backdrop-overlay" id="createFolderModalBackdrop">
-        <div class="add-client-modal-card">
-
-            <div class="modal-header-strip">
-                <i class="fa-solid fa-folder-plus modal-header-icon"></i>
+    <div class="modal-overlay" id="createFolderModal">
+        <div class="modal-card">
+            <div class="modal-header">
+                <i class="fa-solid fa-folder-plus"></i>
                 <h2>New Folder</h2>
-                <button class="modal-close-x-btn" onclick="closeCreateFolderModal()">&times;</button>
             </div>
-
-            <form class="modal-input-form-body" onsubmit="handleFolderGenerationSubmit(event)">
-                <div class="form-field-row">
-                    <input type="text" value="Untitled Folder" class="studio-text-input" id="folderNameTextInput"
-                        required onclick="this.select()">
+            
+            <form class="modal-form" id="newFolderForm">
+                <p class="form-instruction">Enter folder information.</p>
+                
+                <div class="form-field">
+                    <input type="text" id="folderNameInput" placeholder="Folder Name" required value="Untitled Folder">
                 </div>
-
-                <div class="modal-double-action-buttons-strip">
-                    <button type="button" class="modal-split-secondary-btn"
-                        onclick="closeCreateFolderModal()">Cancel</button>
-                    <button type="submit" class="modal-split-primary-btn">Create</button>
-                </div>
+                
+                <button type="submit" class="save-client-btn">Create Folder</button>
             </form>
         </div>
     </div>
 
+    <input type="file" id="photoFilesUploader" multiple accept="image/*" style="display: none;">
+
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
     <script>
-        let currentRepoActivePage = 1;
-        const totalTerminalPagesCount = 30;
+        const supabaseClient = supabase.createClient(
+            "https://rejaosaylldyhvbyhgxl.supabase.co",
+            "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InJlamFvc2F5bGxkeWh2YnloZ3hsIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODEwMjE3MDUsImV4cCI6MjA5NjU5NzcwNX0.1GNinip2Qs923GaoVe6E2EGxp6ixnsJgF4bfDkH2K4A"
+        );
 
-        // Toggle state parameters for context menus options panel dropdown
-        function toggleAddNewMenu(event) {
-            event.stopPropagation();
-            const menu = document.getElementById('addNewMenuBox');
-            menu.classList.toggle('visible-active-dropdown');
-        }
+        let currentUser = null;
 
-        function openCreateFolderModal() {
-            // Dismiss floating action menu option blocks cleanly before launching dialog modal container frames
-            document.getElementById('addNewMenuBox').classList.remove('visible-active-dropdown');
-            document.getElementById('createFolderModalBackdrop').classList.add('visible-modal');
-        }
+        window.addEventListener("load", async () => {
+            try {
+                const { data: { session } } = await supabaseClient.auth.getSession();
+                if (!session) {
+                    window.location.href = "staff_login.html";
+                    return;
+                }
+                currentUser = session.user;
+                
+                let { data: profile } = await supabaseClient
+                    .from("staff_profiles")
+                    .select("*")
+                    .eq("id", currentUser.id)
+                    .single();
 
-        function closeCreateFolderModal() {
-            document.getElementById('createFolderModalBackdrop').classList.remove('visible-modal');
-        }
+                if (profile) {
+                    document.getElementById("userName").textContent = profile.full_name;
+                    if (profile.avatar_url) {
+                        document.getElementById("userAvatar").src = profile.avatar_url;
+                    }
+                }
 
-        function triggerPhotoUploadAction() {
+                await loadRepositoryFolders();
 
-            document.getElementById('addNewMenuBox')
-                .classList.remove('visible-active-dropdown');
+            } catch (err) {
+                console.error("Initialization error:", err);
+            }
+        });
 
-            document.getElementById('photoUploader')
-                .click();
-        }
+        document.getElementById("logoutBtn").addEventListener("click", async (e) => {
+            e.preventDefault();
+            await supabaseClient.auth.signOut();
+            window.location.href = "staff_login.html";
+        });
 
-        async function handleFolderGenerationSubmit(event) {
+        // Toggle dropdown options block
+        const addNewBtn = document.getElementById('addNewDropdownTrigger');
+        const addNewMenu = document.getElementById('addNewDropdownMenu');
 
-            event.preventDefault();
+        addNewBtn.addEventListener('click', (e) => {
+            e.stopPropagation();
+            addNewMenu.classList.toggle('show');
+        });
 
-            const folderName =
-                document.getElementById(
-                    'folderNameTextInput'
-                ).value.trim();
+        document.addEventListener('click', (e) => {
+            if (!addNewMenu.contains(e.target) && e.target !== addNewBtn) {
+                addNewMenu.classList.remove('show');
+            }
+        });
 
-            if (!folderName) return;
+        const createFolderOption = document.getElementById('createFolderActionOption');
+        const folderModal = document.getElementById('createFolderModal');
+        const newFolderForm = document.getElementById('newFolderForm');
 
-            const { error } =
-                await supabaseClient
+        createFolderOption.addEventListener('click', () => {
+            addNewMenu.classList.remove('show');
+            folderModal.classList.add('show');
+            setTimeout(() => document.getElementById('folderNameInput').select(), 100);
+        });
+
+        folderModal.addEventListener('click', (e) => {
+            if (e.target === folderModal) {
+                folderModal.classList.remove('show');
+                newFolderForm.reset();
+            }
+        });
+
+        newFolderForm.addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const folderName = document.getElementById('folderNameInput').value.trim();
+            if (!folderName || !currentUser) return;
+
+            try {
+                const { error } = await supabaseClient
                     .from('folders')
                     .insert({
                         user_id: currentUser.id,
                         folder_name: folderName
                     });
 
-            if (error) {
+                if (error) throw error;
 
-                alert(error.message);
-                return;
-            }
+                folderModal.classList.remove('show');
+                newFolderForm.reset();
+                await loadRepositoryFolders();
 
-            closeCreateFolderModal();
-
-            loadFolders();
-        }
-
-        // Click tracking event listener logic blocks to auto close drop widgets gracefully on root click events
-        window.addEventListener('click', function (event) {
-            const menu = document.getElementById('addNewMenuBox');
-            if (menu && menu.classList.contains('visible-active-dropdown')) {
-                menu.classList.remove('visible-active-dropdown');
-            }
-
-            const folderBackdrop = document.getElementById('createFolderModalBackdrop');
-            if (event.target === folderBackdrop) {
-                closeCreateFolderModal();
+            } catch (err) {
+                alert("Database folder generation failed: " + err.message);
             }
         });
 
-        // Dynamic page turning indicators loop builder matrix rules tracker numbers 1 to 30 
-        function renderRepoPaginationControlsTrack() {
-            const wrapperNode = document.getElementById('repoPaginationWrapper');
-            wrapperNode.innerHTML = "";
+        async function loadRepositoryFolders() {
+            const gridContainer = document.getElementById('repositoryFoldersGrid');
+            if (!gridContainer) return;
 
-            let indicatorsArray = [];
-            if (currentRepoActivePage <= 4) {
-                indicatorsArray = [1, 2, 3, 4, 5, '...', totalTerminalPagesCount];
-            } else if (currentRepoActivePage >= totalTerminalPagesCount - 3) {
-                indicatorsArray = [1, '...', totalTerminalPagesCount - 4, totalTerminalPagesCount - 3, totalTerminalPagesCount - 2, totalTerminalPagesCount - 1, totalTerminalPagesCount];
-            } else {
-                indicatorsArray = [1, '...', currentRepoActivePage - 1, currentRepoActivePage, currentRepoActivePage + 1, '...', totalTerminalPagesCount];
-            }
-
-            indicatorsArray.forEach(token => {
-                if (token === '...') {
-                    const dotsSpan = document.createElement('span');
-                    dotsSpan.className = "pagination-el-ellipsis";
-                    dotsSpan.innerText = "...";
-                    wrapperNode.appendChild(dotsSpan);
-                } else {
-                    const numBtn = document.createElement('button');
-                    numBtn.className = `pagination-number-node ${token === currentRepoActivePage ? 'active-page-state' : ''}`;
-                    numBtn.innerText = token;
-                    numBtn.onclick = function () {
-                        jumpToSpecificRepoPage(token);
-                    };
-                    wrapperNode.appendChild(numBtn);
-                }
-            });
-
-            document.getElementById('repoPrevPageBtn').disabled = (currentRepoActivePage === 1);
-            document.getElementById('repoNextPageBtn').disabled = (currentRepoActivePage === totalTerminalPagesCount);
-        }
-
-        function navigateRepoPage(deltaValue) {
-            const targetValue = currentRepoActivePage + deltaValue;
-            if (targetValue >= 1 && targetValue <= totalTerminalPagesCount) {
-                currentRepoActivePage = targetValue;
-                renderRepoPaginationControlsTrack();
-                // Real production logic would pass the page number instance node to fetch new asset data records here
-            }
-        }
-
-        function jumpToSpecificRepoPage(assignedPageNum) {
-            currentRepoActivePage = parseInt(assignedPageNum);
-            renderRepoPaginationControlsTrack();
-        }
-
-        // Inline live filter query controller tracking matching name inputs to folder items titles
-        function filterRepositoryGrid() {
-            const input = document.getElementById('repoFolderSearchInput');
-            const filterValue = input.value.toLowerCase();
-            const gridContainer = document.getElementById('repositoryGrid');
-            const folderNodes = gridContainer.getElementsByClassName('folder-card-wrapper-node');
-
-            for (let i = 0; i < folderNodes.length; i++) {
-                const titleSpan = folderNodes[i].getElementsByClassName('folder-label-title-text')[0];
-                if (titleSpan) {
-                    const innerTextValue = titleSpan.textContent || titleSpan.innerText;
-                    if (innerTextValue.toLowerCase().indexOf(filterValue) > -1) {
-                        folderNodes[i].style.display = "";
-                    } else {
-                        folderNodes[i].style.display = "none";
-                    }
-                }
-            }
-        }
-        V = async function loadFolders() {
-
-            const grid =
-                document.getElementById('repositoryGrid');
-
-            const { data, error } =
-                await supabaseClient
+            try {
+                const { data: folders, error } = await supabaseClient
                     .from('folders')
                     .select('*')
-                    .eq('user_id', currentUser.id)
-                    .order('created_at', {
-                        ascending: false
-                    });
+                    .order('created_at', { ascending: false });
 
-            if (error) {
-                console.error(error);
-                return;
-            }
+                if (error) throw error;
 
-            if (!data.length) {
-
-                grid.innerHTML = `
-            <div class="empty-repository">
-                No folders created yet.
-            </div>
-        `;
-
-                return;
-            }
-
-            grid.innerHTML = '';
-
-            data.forEach(folder => {
-
-                grid.innerHTML += `
-            <div
-                class="folder-card-wrapper-node"
-                onclick="openFolder('${folder.id}')"
-            >
-
-                <div class="folder-graphic-box">
-                    <i class="fa-solid fa-folder"></i>
-                </div>
-
-                <span class="folder-label-title-text">
-                    ${folder.folder_name}
-                </span>
-
-            </div>
-        `;
-            });
-        }
-        document
-            .getElementById('photoUploader')
-            .addEventListener('change', uploadPhotos);
-
-        async function uploadPhotos(event) {
-
-            const files = event.target.files;
-
-            if (!files.length) return;
-
-            for (const file of files) {
-
-                const filePath =
-                    `${currentUser.id}/${Date.now()}_${file.name}`;
-
-                const { error: uploadError } =
-                    await supabaseClient.storage
-                        .from('repository')
-                        .upload(filePath, file);
-
-                if (uploadError) {
-
-                    console.error(uploadError);
-                    continue;
+                if (!folders || folders.length === 0) {
+                    gridContainer.innerHTML = `<div class="empty-repo-message">No folders created yet. Click 'Add New' to begin.</div>`;
+                    return;
                 }
 
-                const {
-                    data: { publicUrl }
-                } =
-                    supabaseClient.storage
-                        .from('repository')
-                        .getPublicUrl(filePath);
+                gridContainer.innerHTML = '';
+                folders.forEach(folder => {
+                    const cardNode = document.createElement('div');
+                    cardNode.className = 'folder-card-item';
+                    cardNode.setAttribute('onclick', `MapsToFolderView('${folder.id}')`);
+                    cardNode.innerHTML = `
+                        <div class="folder-icon-circle">
+                            <i class="fa-solid fa-folder"></i>
+                        </div>
+                        <div class="folder-meta-details">
+                            <h3>${escapeHtml(folder.folder_name)}</h3>
+                        </div>
+                    `;
+                    gridContainer.appendChild(cardNode);
+                });
 
-                await supabaseClient
-                    .from('photos')
-                    .insert({
-
-                        user_id: currentUser.id,
-
-                        file_name: file.name,
-
-                        image_url: publicUrl,
-
-                        tags: []
-
-                    });
+            } catch (err) {
+                console.error("Error loading folders:", err);
+                gridContainer.innerHTML = `<div class="empty-repo-message" style="color: #cc3333;">Failed to load system folders repository maps.</div>`;
             }
-
-            alert('Photos uploaded successfully');
-        }
-        async function openFolder(folderId) {
-
-            console.log(
-                "Folder Opened:",
-                folderId
-            );
-
         }
 
-        async function initializeRepository() {
-
-            renderRepoPaginationControlsTrack();
-
-            const {
-                data: { session }
-            } =
-                await supabaseClient.auth.getSession();
-
-            if (!session) {
-
-                window.location.href =
-                    "staff_login.html";
-
-                return;
-            }
-
-            currentUser = session.user;
-
-            await loadFolders();
+        function navigateToFolderView(folderId) {
+            console.log("Navigating to folder ID:", folderId);
         }
 
-        document.addEventListener(
-            "DOMContentLoaded",
-            initializeRepository
-        );
+        function escapeHtml(str) {
+            return str.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/"/g, "&quot;").replace(/'/g, "&#039;");
+        }
+
+        const uploadPhotosOption = document.getElementById('uploadPhotosActionOption');
+        const hiddenFileInput = document.getElementById('photoFilesUploader');
+
+        uploadPhotosOption.addEventListener('click', () => {
+            addNewMenu.classList.remove('show');
+            hiddenFileInput.click();
+        });
+
+        hiddenFileInput.addEventListener('change', (event) => {
+            const files = event.target.files;
+            if (!files.length || !currentUser) return;
+            console.log(`Processing image assets stream bundle injection pipeline for ${files.length} frames.`);
+        });
     </script>
-    <input type="file" id="photoUploader" multiple accept="image/*" style="display:none">
 </body>
 
 </html>

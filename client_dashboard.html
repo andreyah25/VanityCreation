@@ -8,122 +8,118 @@
 
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@300;400;500;600;700&display=swap"
-        rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@300;400;500;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
-
+    <link rel="stylesheet" href="staff_dashboard.css">
     <link rel="stylesheet" href="client_dashboard.css">
 </head>
 
 <body>
 
-    <!-- TOP NAVBAR -->
     <header class="top-navbar">
-
-        <div class="logo-area">
+        <div class="logo-section">
             <div class="logo-box"></div>
             <span>VANITY CREATION</span>
         </div>
 
-        <div class="top-right">
-
-            <div class="top-search">
+        <div class="navbar-right">
+            <div class="search-box">
                 <i class="fa-solid fa-magnifying-glass"></i>
                 <input type="text" placeholder="Search photos by tag, email, or file name">
             </div>
-
-            <div class="avatar"></div>
-
+            <div class="user-profile">
+                <img id="userAvatar" class="avatar" src="https://via.placeholder.com/42" alt="Profile">
+                <span id="userName">Loading...</span>
+            </div>
         </div>
-
     </header>
 
+    <div class="dashboard-wrapper">
 
-    <div class="workspace">
-
-        <!-- SIDEBAR -->
         <aside class="sidebar">
-
             <nav>
-
-                <a href="staff_dashboard.html" class="menu-item">
+                <a href="staff_dashboard.html">
                     <i class="fa-solid fa-table-cells-large"></i>
-                    Dashboard
+                    Home
                 </a>
-
-                <a href="client_dashboard.html" class="menu-item active">
+                <a href="client_dashboard.html" class="active">
                     <i class="fa-solid fa-users"></i>
                     Clients
                 </a>
-
-                <a href="staff_repository.html" class="menu-item">
+                <a href="staff_repository.html">
                     <i class="fa-solid fa-book"></i>
                     Repository
                 </a>
-
-                <a href="staff_payment.html" class="menu-item">
+                <a href="staff_payment.html">
                     <i class="fa-solid fa-credit-card"></i>
                     Payments
                 </a>
-
-                <a href="profile.html" class="menu-item">
+                <a href="#">
                     <i class="fa-solid fa-user"></i>
                     Profile
                 </a>
-
-                <a href="settings.html" class="menu-item">
+                <a href="#">
                     <i class="fa-solid fa-gear"></i>
                     Settings
                 </a>
-
             </nav>
 
-                <a href="landing_page.html" class="logout-btn" id="logoutBtn">
-
+            <a href="landing_page.html" class="logout-btn" id="logoutBtn">
                 <i class="fa-solid fa-arrow-right-from-bracket logout-icon"></i>
-
                 <span>Log out</span>
-
             </a>
-
         </aside>
-        <!-- CONTENT -->
+
         <main class="content">
-
-            <div class="page-header">
-
-                <div>
+            
+            <div class="client-header-container">
+                <div class="page-header">
                     <h1>Client List</h1>
                     <p>Browse and manage your clients records.</p>
                 </div>
-
-                <div class="header-actions">
-
-                    <div class="client-search">
+                
+                <div class="client-actions-row">
+                    <div class="table-search-box">
                         <input type="text" placeholder="Search client...">
                         <i class="fa-solid fa-magnifying-glass"></i>
                     </div>
+                    
+                    <div class="filter-dropdown-wrapper">
+                        <button class="table-filter-btn" id="filterBtn">
+                            <i class="fa-solid fa-sliders"></i>
+                            Filter
+                        </button>
+                        <div class="filter-dropdown-menu" id="filterDropdown">
+                            <div class="dropdown-section-title">Select Month</div>
+                            <div class="dropdown-scroll-area">
+                                <a href="#" data-filter="1">January</a>
+                                <a href="#" data-filter="2">February</a>
+                                <a href="#" data-filter="3">March</a>
+                                <a href="#" data-filter="4">April</a>
+                                <a href="#" data-filter="5">May</a>
+                                <a href="#" data-filter="6">June</a>
+                                <a href="#" data-filter="7">July</a>
+                                <a href="#" data-filter="8">August</a>
+                                <a href="#" data-filter="9">September</a>
+                                <a href="#" data-filter="10">October</a>
+                                <a href="#" data-filter="11">November</a>
+                                <a href="#" data-filter="12">December</a>
+                            </div>
+                            <div class="dropdown-divider"></div>
+                            <a href="#" data-filter="all" class="clear-filter">Clear Filter</a>
+                        </div>
+                    </div>
 
-                    <button class="filter-btn">
-                        <i class="fa-solid fa-filter"></i>
-                        Filter
-                    </button>
-
-                    <button class="add-client-btn">
+                    <button class="add-new-client-btn">
                         <i class="fa-solid fa-pen-to-square"></i>
                         Add New Client
                     </button>
-
                 </div>
-
             </div>
 
-            <!-- CLIENT TABLE -->
-            <div class="table-card">
-
-                <table>
-
+            <div class="ui-table-card-panel">
+                <table class="ui-data-grid">
                     <thead>
                         <tr>
                             <th>Clients</th>
@@ -134,48 +130,161 @@
                             <th>Access Status</th>
                         </tr>
                     </thead>
-
                     <tbody id="clientTableBody">
-
-                        <!-- Future client records go here -->
-
-                    </tbody>
-
+                        </tbody>
                 </table>
-
-                <div class="empty-state">
-
-                    <i class="fa-solid fa-users"></i>
-
-                    <h3>No Clients Yet</h3>
-
-                    <p>
-                        Clients that you add will appear here.
-                    </p>
-
-                </div>
-
             </div>
 
         </main>
-
     </div>
 
+    <div class="modal-overlay" id="addClientModal">
+        <div class="modal-card">
+            <div class="modal-header">
+                <i class="fa-solid fa-user-plus"></i>
+                <h2>New Client</h2>
+            </div>
+            
+            <form class="modal-form" id="newClientForm">
+                <p class="form-instruction">Enter client information.</p>
+                
+                <div class="form-field">
+                    <input type="text" id="clientName" placeholder="Client Name" required>
+                </div>
+                
+                <div class="form-field">
+                    <input type="email" id="clientEmail" placeholder="Email Address" required>
+                </div>
+                
+                <div class="form-field">
+                    <input type="text" id="eventType" placeholder="Event Type" required>
+                </div>
+                
+                <div class="form-field date-field-wrapper">
+                    <input type="date" id="expiryDate" required>
+                    <span class="date-placeholder">Set Expiry Date</span>
+                </div>
+                
+                <div class="form-field select-field-wrapper">
+                    <select id="paymentStatus" required>
+                        <option value="" disabled selected hidden>Payment Status</option>
+                        <option value="Paid">Paid</option>
+                        <option value="Pending">Pending</option>
+                    </select>
+                    <i class="fa-solid fa-chevron-down select-arrow"></i>
+                </div>
+                
+                <div class="form-field select-field-wrapper">
+                    <select id="accessStatus" required>
+                        <option value="" disabled selected hidden>Access Status</option>
+                        <option value="Active">Active</option>
+                        <option value="Inactive">Inactive</option>
+                    </select>
+                    <i class="fa-solid fa-chevron-down select-arrow"></i>
+                </div>
+                
+                <button type="submit" class="save-client-btn">Save Client</button>
+            </form>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
     <script>
+        const supabaseClient = supabase.createClient(
+            "https://rejaosaylldyhvbyhgxl.supabase.co",
+            "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InJlamFvc2F5bGxkeWh2YnloZ3hsIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODEwMjE3MDUsImV4cCI6MjA5NjU5NzcwNX0.1GNinip2Qs923GaoVe6E2EGxp6ixnsJgF4bfDkH2K4A"
+        );
 
-        const addClientBtn =
-            document.querySelector(".add-client-btn");
+        // Core Dashboard Auth Loader Initialization
+        window.addEventListener("load", async () => {
+            try {
+                const { data: { session } } = await supabaseClient.auth.getSession();
+                if (!session) {
+                    window.location.href = "staff_login.html";
+                    return;
+                }
+                const user = session.user;
+                let { data: profile } = await supabaseClient
+                    .from("staff_profiles")
+                    .select("*")
+                    .eq("id", user.id)
+                    .single();
 
-        addClientBtn.addEventListener("click", () => {
-
-            alert(
-                "Client form will open here."
-            );
-
+                if (profile) {
+                    document.getElementById("userName").textContent = profile.full_name;
+                    if (profile.avatar_url) {
+                        document.getElementById("userAvatar").src = profile.avatar_url;
+                    }
+                }
+            } catch (err) {
+                console.error(err);
+            }
         });
 
+        // Logout Session Termination Execution Channel
+        document.getElementById("logoutBtn").addEventListener("click", async (e) => {
+            e.preventDefault();
+            await supabaseClient.auth.signOut();
+            window.location.href = "staff_login.html";
+        });
+
+        // ==========================================================================
+        // FILTER DROPDOWN LOGIC SYSTEM CONTROLS
+        // ==========================================================================
+        const filterBtn = document.getElementById('filterBtn');
+        const filterDropdown = document.getElementById('filterDropdown');
+
+        filterBtn.addEventListener('click', (e) => {
+            e.stopPropagation();
+            filterDropdown.classList.toggle('show');
+        });
+
+        filterDropdown.querySelectorAll('.dropdown-scroll-area a, .clear-filter').forEach(option => {
+            option.addEventListener('click', (e) => {
+                e.preventDefault();
+                const selectedMonth = option.getAttribute('data-filter');
+                console.log("Filtering database array context month selection value:", selectedMonth);
+                // Ready for your array logic matching filtering workflows
+                filterDropdown.classList.remove('show');
+            });
+        });
+
+        document.addEventListener('click', (e) => {
+            if (!filterDropdown.contains(e.target) && e.target !== filterBtn) {
+                filterDropdown.classList.remove('show');
+            }
+        });
+
+
+        const addClientBtn = document.querySelector('.add-new-client-btn');
+        const clientModal = document.getElementById('addClientModal');
+        const newClientForm = document.getElementById('newClientForm');
+
+        addClientBtn.addEventListener('click', () => {
+            clientModal.classList.add('show');
+        });
+
+        clientModal.addEventListener('click', (e) => {
+            if (e.target === clientModal) {
+                clientModal.classList.remove('show');
+                newClientForm.reset();
+            }
+        });
+
+        newClientForm.addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const clientPayload = {
+                full_name: document.getElementById('clientName').value,
+                email: document.getElementById('clientEmail').value,
+                event_type: document.getElementById('eventType').value,
+                expiry_date: document.getElementById('expiryDate').value,
+                payment_status: document.getElementById('paymentStatus').value,
+                access_status: document.getElementById('accessStatus').value
+            };
+            console.log("Assembled Form Payload Package Maps:", clientPayload);
+            clientModal.classList.remove('show');
+            newClientForm.reset();
+        });
     </script>
-
 </body>
-
 </html>

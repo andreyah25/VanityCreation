@@ -1,0 +1,274 @@
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    background-color: #1e292b;
+    font-family: "DM Sans", sans-serif;
+    min-height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    overflow-x: hidden;
+    padding: 30px 20px;
+}
+
+
+.login-wrapper {
+    width: 100%;
+    max-width: 630px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.top-accent-line {
+    width: 150px;
+    height: 2px;
+    background-color: #ffffff;
+    margin-bottom: 50px;
+    opacity: 0.9;
+}
+
+.welcome-heading {
+    color: #ffffff;
+    font-size: 52px;
+    font-weight: 500;
+    letter-spacing: -0.5px;
+    margin-bottom: 14px;
+    text-align: center;
+}
+
+.welcome-subtext {
+    color: #a4b0b2;
+    font-size: 19px;
+    font-weight: 300;
+    margin-bottom: 50px;
+    text-align: center;
+    line-height: 1.4;
+}
+
+/* ==========================================================================
+   3. CENTRAL WHITE MAIN CONTAINER CARD
+   ========================================================================== */
+.login-card-container {
+    background-color: #ffffff;
+    width: 100%;
+    border-radius: 4px;
+    padding: 65px 55px 55px;
+    box-shadow: 0 25px 45px rgba(0, 0, 0, 0.12);
+}
+
+.login-form {
+    display: flex;
+    flex-direction: column;
+}
+
+/* ==========================================================================
+   4. INTERACTIVE INPUT FLOATING GROUPS
+   ========================================================================== */
+.input-group {
+    position: relative;
+    margin-bottom: 40px;
+    width: 100%;
+}
+
+.input-group input {
+    width: 100%;
+    padding: 12px 0 8px;
+    border: none;
+    border-bottom: 1px solid #b3b3b3;
+    background: transparent;
+    outline: none;
+    font-size: 16px;
+    color: #222222;
+    font-family: "DM Sans", sans-serif;
+    transition: border-color 0.2s ease;
+}
+
+.input-group input:focus {
+    border-bottom-color: #1e292b;
+}
+
+.input-group label {
+    position: absolute;
+    top: 12px;
+    left: 0;
+    color: #666666;
+    font-size: 16px;
+    pointer-events: none;
+    transition: all 0.2s ease;
+}
+
+/* Labels move UP when input is focused or contains text */
+.input-group input:focus ~ label,
+.input-group input:not(:placeholder-shown) ~ label {
+    top: -12px;
+    font-size: 13px;
+    color: #777777;
+}
+
+/* Protect text space from clipping through the absolute font-awesome eye buttons */
+.password-group input {
+    padding-right: 35px;
+}
+
+/* ==========================================================================
+   5. CROSS-EYE SYSTEM VISIBILITY TOGGLES
+   ========================================================================== */
+.toggle-password {
+    position: absolute;
+    right: 0;
+    top: 12px;
+    background: none;
+    border: none;
+    color: #8c8c8c;
+    cursor: pointer;
+    font-size: 16px;
+    transition: color 0.2s ease;
+}
+
+.toggle-password:hover {
+    color: #222222;
+}
+
+/* ==========================================================================
+   6. ANCILLARY INLINE PAGE LINK COORDINATES
+   ========================================================================== */
+.forgot-password-wrapper {
+    display: flex;
+    justify-content: flex-end;
+    margin-top: -25px;
+    margin-bottom: 40px;
+}
+
+.forgot-link {
+    color: #333333;
+    font-size: 12px;
+    text-decoration: underline;
+    font-weight: 500;
+}
+
+.forgot-link:hover {
+    color: #000000;
+}
+
+/* ==========================================================================
+   7. MAIN INTERACTIVE CALL-TO-ACTION PRIMARY ACTION BUTTONS
+   ========================================================================== */
+.submit-login-btn {
+    background-color: #1e292b;
+    color: #ffffff;
+    border: none;
+    padding: 18px;
+    font-size: 16px;
+    font-weight: 700;
+    border-radius: 4px;
+    cursor: pointer;
+    font-family: "DM Sans", sans-serif;
+    transition: background-color 0.2s ease, transform 0.1s ease;
+    margin-bottom: 35px;
+}
+
+/* Fix margin when submit-login-btn is the very last element in the container */
+.login-form .submit-login-btn:last-child {
+    margin-bottom: 0px;
+}
+
+.submit-login-btn:hover {
+    background-color: #12191a;
+}
+
+.submit-login-btn:active {
+    transform: scale(0.99);
+}
+
+/* ==========================================================================
+   8. DIVIDERS & ALTERNATIVE THIRD-PARTY PROVIDERS
+   ========================================================================== */
+.form-divider {
+    display: flex;
+    align-items: center;
+    text-align: center;
+    margin-bottom: 35px;
+    color: #777777;
+    font-size: 14px;
+}
+
+.form-divider::before,
+.form-divider::after {
+    content: "";
+    flex: 1;
+    border-bottom: 1px solid #e0e0e0;
+}
+
+.form-divider::before {
+    margin-right: 18px;
+}
+
+.form-divider::after {
+    margin-left: 18px;
+}
+
+.google-login-btn {
+    background-color: #ffffff;
+    color: #333333;
+    border: 1px solid #cccccc;
+    padding: 15px;
+    font-size: 15px;
+    font-weight: 700;
+    border-radius: 4px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 12px;
+    font-family: "DM Sans", sans-serif;
+    transition: background-color 0.2s ease, border-color 0.2s ease;
+    width: 100%;
+}
+
+.google-login-btn:hover {
+    background-color: #fafafa;
+    border-color: #999999;
+}
+
+.google-icon {
+    flex-shrink: 0;
+}
+
+/* ==========================================================================
+   9. NAVIGATION FOOTER LINKS (SIGN UP / LOG IN)
+   ========================================================================== */
+.signup-footer-text {
+    text-align: center;
+    font-size: 13px;
+    color: #555555;
+    margin-top: 30px;
+}
+
+.signup-footer-text a {
+    color: #1e292b;
+    font-weight: 700;
+    text-decoration: underline;
+}
+
+/* ==========================================================================
+   10. MOBILE RESPONSIVE MEDIA BREAKPOINTS
+   ========================================================================== */
+@media (max-width: 520px) {
+    .login-card-container {
+        padding: 45px 25px 35px;
+    }
+
+    .welcome-heading {
+        font-size: 36px;
+    }
+
+    .welcome-subtext {
+        font-size: 16px;
+    }
+}

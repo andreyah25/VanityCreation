@@ -1,33 +1,26 @@
-/*
-
 * {
     margin: 0;
     padding: 0;
     box-sizing: border-box;
 }
 
-html {
-    scroll-behavior: smooth;
-    font-family: "DM Sans", sans-serif;
-    color: #333;
-}
-
 body {
     background-color: #1e292b;
+    font-family: "DM Sans", sans-serif;
     min-height: 100vh;
     display: flex;
     justify-content: center;
     align-items: center;
+    overflow-x: hidden;
+    padding: 30px 20px;
 }
 
-
-.signup-wrapper {
+.login-wrapper {
     width: 100%;
     max-width: 630px;
     display: flex;
     flex-direction: column;
     align-items: center;
-    margin: auto;
 }
 
 .top-accent-line {
@@ -37,7 +30,6 @@ body {
     margin-bottom: 50px;
     opacity: 0.9;
 }
-
 
 .welcome-heading {
     color: #ffffff;
@@ -50,30 +42,25 @@ body {
 
 .welcome-subtext {
     color: #a4b0b2;
-    font-size: 19px;
+    font-size: 17px;
     font-weight: 300;
     margin-bottom: 50px;
     text-align: center;
     line-height: 1.4;
 }
 
-
-
-.signup-card-container {
+.login-card-container {
     background-color: #ffffff;
     width: 100%;
     border-radius: 4px;
-    padding: 65px 55px;
+    padding: 65px 55px 55px;
     box-shadow: 0 25px 45px rgba(0, 0, 0, 0.12);
 }
 
-
-.signup-form {
+.login-form {
     display: flex;
     flex-direction: column;
 }
-
-
 
 .input-group {
     position: relative;
@@ -83,13 +70,13 @@ body {
 
 .input-group input {
     width: 100%;
-    padding: 12px 0 8px 0;
+    padding: 12px 0 8px;
     border: none;
     border-bottom: 1px solid #b3b3b3;
     background: transparent;
     outline: none;
     font-size: 16px;
-    color: #222;
+    color: #222222;
     font-family: "DM Sans", sans-serif;
     transition: border-color 0.2s ease;
 }
@@ -102,25 +89,24 @@ body {
     position: absolute;
     top: 12px;
     left: 0;
-    color: #666;
+    color: #666666;
     font-size: 16px;
     pointer-events: none;
-    transition: 0.2s ease;
+    transition: all 0.2s ease;
 }
 
 .input-group input:focus ~ label,
 .input-group input:not(:placeholder-shown) ~ label {
     top: -12px;
     font-size: 13px;
-    color: #777;
+    color: #777777;
 }
-
-
 
 .password-group input {
     padding-right: 35px;
 }
 
+/* --- TOGGLE ICON CONTROLS --- */
 .toggle-password {
     position: absolute;
     right: 0;
@@ -130,111 +116,46 @@ body {
     color: #8c8c8c;
     cursor: pointer;
     font-size: 16px;
+    transition: color 0.2s ease;
 }
 
 .toggle-password:hover {
-    color: #222;
+    color: #222222;
 }
 
-
-
-.forgot-password-wrapper {
-    display: flex;
-    justify-content: flex-end;
-    margin-top: -25px;
-    margin-bottom: 40px;
-}
-
-.forgot-link {
-    font-size: 12px;
-    color: #333;
-    text-decoration: underline;
-    font-weight: 500;
-}
-
-.forgot-link:hover {
-    color: #000;
-}
-
-
-.submit-signup-btn {
+.submit-login-btn {
     background-color: #1e292b;
-    color: #fff;
+    color: #ffffff;
     border: none;
     padding: 18px;
     font-size: 16px;
     font-weight: 700;
     border-radius: 4px;
     cursor: pointer;
-    margin-bottom: 35px;
-    transition: 0.2s ease;
+    font-family: "DM Sans", sans-serif;
+    transition: background-color 0.2s ease, transform 0.1s ease;
+    margin-top: 10px;
 }
 
-.submit-signup-btn:hover {
+.submit-login-btn:hover {
     background-color: #12191a;
 }
 
-.submit-signup-btn:active {
+.submit-login-btn:active {
     transform: scale(0.99);
 }
 
+/* --- RESPONSIVE MEDIA QUERIES --- */
+@media (max-width: 520px) {
+    .login-card-container {
+        padding: 45px 25px 35px;
+    }
 
+    .welcome-heading {
+        font-size: 36px;
+    }
 
-.form-divider {
-    display: flex;
-    align-items: center;
-    text-align: center;
-    margin-bottom: 35px;
-    color: #777;
-    font-size: 14px;
-}
-
-.form-divider::before,
-.form-divider::after {
-    content: '';
-    flex: 1;
-    border-bottom: 1px solid #e0e0e0;
-}
-
-.form-divider::before {
-    margin-right: 18px;
-}
-
-.form-divider::after {
-    margin-left: 18px;
-}
-
-
-.google-signup-btn {
-    background-color: #fff;
-    color: #333;
-    border: 1px solid #ccc;
-    padding: 15px;
-    font-size: 15px;
-    font-weight: 700;
-    border-radius: 4px;
-    cursor: pointer;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    gap: 12px;
-    width: 100%;
-    transition: 0.2s ease;
-}
-
-.google-signup-btn:hover {
-    background-color: #fafafa;
-    border-color: #999;
-}
-
-.login-footer-text {
-    text-align: center;
-    font-size: 13px;
-    color: #555;
-}
-
-.login-footer-text a {
-    color: #1e292b;
-    font-weight: 700;
-    text-decoration: underline;
+    .welcome-subtext {
+        font-size: 16px;
+    }
 }

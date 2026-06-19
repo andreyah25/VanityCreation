@@ -35,6 +35,10 @@
           <input type="text" maxlength="1" inputmode="numeric" required>
           <input type="text" maxlength="1" inputmode="numeric" required>
           <input type="text" maxlength="1" inputmode="numeric" required>
+          <input type="text" maxlength="1" inputmode="numeric" required>
+          <input type="text" maxlength="1" inputmode="numeric" required>
+
+
         </div>
 
         <div class="resend-wrapper">
@@ -42,8 +46,9 @@
           <a href="#" onclick="alert('New code sent')">Resend code</a>
         </div>
 
-        <button type="submit" class="submit-verify-btn">Verify</button>
-
+        <button id="verifyBtn" type="button" class="submit-verify-btn">
+          Verify
+        </button>
       </form>
 
       <button id="continueBtn" style="display:none; margin-top:20px;">
@@ -53,88 +58,94 @@
     </div>
   </div>
 
-  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-
-  <div>
-    <input id="otp" placeholder="Enter OTP">
-  </div>
-
-  <button id="verifyBtn">Verify</button>
-
-  <p id="status"></p>
 
   <script>
-    const supabaseClient = supabase.createClient(
-      "https://rejaosaylldyhvbyhgxl.supabase.co",
-      "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InJlamFvc2F5bGxkeWh2YnloZ3hsIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODEwMjE3MDUsImV4cCI6MjA5NjU5NzcwNX0.1GNinip2Qs923GaoVe6E2EGxp6ixnsJgF4bfDkH2K4A"
-    );
+  const supabaseClient = supabase.createClient(
+    "https://rejaosaylldyhvbyhgxl.supabase.co",
+    "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InJlamFvc2F5bGxkeWh2YnloZ3hsIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODEwMjE3MDUsImV4cCI6MjA5NjU5NzcwNX0.1GNinip2Qs923GaoVe6E2EGxp6ixnsJgF4bfDkH2K4A"
+  );
 
-    let userEmail = null;
+  // Optional: preload session check (not required for verification logic)
+  // session check
+window.onload = async () => {
+  const { data, error } = await supabaseClient.auth.getSession();
 
-    /* =========================
-       GET USER SESSION
-    ========================= */
-    window.addEventListener("load", async () => {
+  if (error || !data.session) {
+    window.location.href = "staff_login.html";
+  }
+};
 
-      const { data: { session } } =
-        await supabaseClient.auth.getSession();
+document.getElementById("verifyBtn").addEventListener("click", async () => {
+  try {
 
-      if (!session) {
-        window.location.href = "staff_login.html";
-        return;
-      }
+    // BUILD OTP
+    const inputs = document.querySelectorAll(".code-inputs-group input");
 
-      userEmail = session.user.email;
+    let otp = "";
+    inputs.forEach(i => otp += i.value.trim());
 
-      document.getElementById("status").innerText =
-        "OTP sent to your email (check inbox)";
-    });
+    if (otp.length !== 6) {
+      alert("Please enter the 6-digit OTP");
+      return;
+    }
 
-    /* =========================
-       VERIFY OTP
-    ========================= */
-    document.getElementById("verifyBtn").addEventListener("click", async () => {
+    // GET USER
+    const { data: userData, error: userError } =
+      await supabaseClient.auth.getUser();
 
-      const otp = document.getElementById("otp").value;
+    if (userError || !userData?.user) {
+      alert("Session expired. Please login again.");
+      window.location.href = "staff_login.html";
+      return;
+    }
 
-      const { data, error } = await supabaseClient.auth.verifyOtp({
-        email: userEmail,
-        token: otp,
-        type: "email"
-      });
+    const userEmail = userData.user.email;
 
-      if (error) {
-        document.getElementById("status").innerText =
-          "Invalid OTP";
-        return;
-      }
+    // GET LATEST OTP
+    const { data, error } = await supabaseClient
+      .from("otp_verifications")
+      .select("*")
+      .eq("email", userEmail)
+      .order("created_at", { ascending: false })
+      .limit(1)
+      .maybeSingle();
 
-      // create/update staff profile
-      const user = data.user;
+    if (error) {
+      console.error(error);
+      alert(error.message);
+      return;
+    }
 
-      let { data: profile } = await supabaseClient
-        .from("staff_profiles")
-        .select("*")
-        .eq("id", user.id)
-        .single();
+    if (!data) {
+      alert("No OTP found for this email.");
+      return;
+    }
 
-      if (!profile) {
-        await supabaseClient.from("staff_profiles").insert({
-          id: user.id,
-          email: user.email,
-          role: "staff",
-          verified: false
-        });
-      }
+    // COMPARE OTP
+    if (data.otp !== otp) {
+      alert("Invalid OTP");
+      return;
+    }
 
-      document.getElementById("status").innerText =
-        "Verified! Waiting for admin approval...";
+    // DELETE OTP AFTER SUCCESS
+    const { error: deleteError } = await supabaseClient
+      .from("otp_verifications")
+      .delete()
+      .eq("id", data.id);
 
-      setTimeout(() => {
-        window.location.href = "staff_dashboard.html";
-      }, 1500);
-    });
-  </script>
+    if (deleteError) {
+      console.warn("Delete failed:", deleteError);
+    }
+
+    alert("Verified successfully!");
+    window.location.href = "staff_dashboard.html";
+
+  } catch (err) {
+    console.error(err);
+    alert("Unexpected error occurred");
+  }
+});
+</script>
 </body>
 
 </html>

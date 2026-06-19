@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+</head>
+
+<body>
+    <p>Signing in...</p>
+
+    <script>
+        const supabaseClient = supabase.createClient(
+            "https://rejaosaylldyhvbyhgxl.supabase.co",
+            "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InJlamFvc2F5bGxkeWh2YnloZ3hsIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODEwMjE3MDUsImV4cCI6MjA5NjU5NzcwNX0.1GNinip2Qs923GaoVe6E2EGxp6ixnsJgF4bfDkH2K4A"
+        );
+
+        window.onload = async () => {
+            const { data, error } = await supabaseClient.auth.getSession();
+
+            if (!data.session) {
+                window.location.href = "staff_login.html";
+                return;
+            }
+
+            const user = data.session.user;
+
+            await sendOTP(user);
+
+            window.location.href = "verification_code.html";
+        };
+
+        async function sendOTP(user) {
+            const otp = Math.floor(100000 + Math.random() * 900000).toString();
+
+            await supabaseClient.from("otp_verifications").insert({
+                user_id: user.id,
+                email: user.email,
+                otp,
+                expires_at: new Date(Date.now() + 10 * 60000)
+            });
+
+            await supabaseClient.functions.invoke("send-otp", {
+                body: { email: user.email, otp }
+            });
+        }
+    </script>
+
+</body>
+
+</html>

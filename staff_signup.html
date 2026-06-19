@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Get Started - Vanity Creation</title>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+
+    <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@300;400;500;600;700&display=swap"
+        rel="stylesheet">
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="staff_signup.css">
+
+    <!-- Supabase MUST be inside head or before script usage -->
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+</head>
+
+<body>
+
+    <div class="login-wrapper">
+
+        <div class="top-accent-line"></div>
+
+        <h1 class="welcome-heading">Get Started</h1>
+        <p class="welcome-subtext">Create your account in seconds.</p>
+
+        <div class="login-card-container">
+
+            <form class="login-form" id="staffSignUpForm">
+
+                <div class="input-group">
+                    <input type="text" id="fullName" autocomplete="name" required placeholder=" ">
+                    <label for="fullName">Full Name</label>
+                </div>
+
+                <div class="input-group">
+                    <input type="email" id="email" autocomplete="email" required placeholder=" ">
+                    <label for="email">Email Address</label>
+                </div>
+
+                <div class="input-group password-group">
+                    <input type="password" id="password" autocomplete="new-password" required placeholder=" ">
+                    <label for="password">Password</label>
+
+                    <button type="button" class="toggle-password" id="passwordToggle">
+                        <i class="fa-regular fa-eye-slash"></i>
+                    </button>
+                </div>
+
+                <button type="submit" class="submit-login-btn">
+                    Sign up
+                </button>
+
+                <p class="signup-footer-text">
+                    Already have an account? <a href="staff_login.html">Log in</a>
+                </p>
+
+            </form>
+
+        </div>
+
+    </div>
+
+    <script>
+        /* =========================
+           SUPABASE INIT
+        ========================= */
+        const SUPABASE_URL = "https://rejaosaylldyhvbyhgxl.supabase.co";
+
+        const SUPABASE_ANON_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InJlamFvc2F5bGxkeWh2YnloZ3hsIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODEwMjE3MDUsImV4cCI6MjA5NjU5NzcwNX0.1GNinip2Qs923GaoVe6E2EGxp6ixnsJgF4bfDkH2K4A";
+
+
+        const supabaseClient = supabase.createClient(
+            SUPABASE_URL,
+            SUPABASE_ANON_KEY
+        );
+
+
+        const passwordToggle = document.getElementById("passwordToggle");
+        const passwordInput = document.getElementById("password");
+        const toggleIcon = passwordToggle.querySelector("i");
+
+        passwordToggle.addEventListener("click", () => {
+            const isHidden = passwordInput.type === "password";
+
+            passwordInput.type = isHidden ? "text" : "password";
+            toggleIcon.className = isHidden
+                ? "fa-regular fa-eye"
+                : "fa-regular fa-eye-slash";
+        });
+
+     
+        document.getElementById("staffSignUpForm").addEventListener("submit", async (e) => {
+            e.preventDefault();
+
+            const fullName = document.getElementById("fullName").value.trim();
+            const email = document.getElementById("email").value.trim();
+            const password = document.getElementById("password").value.trim();
+
+            // 1. Create account in Supabase Auth
+            const { data, error } = await supabaseClient.auth.signUp({
+                email,
+                password
+            });
+
+            if (error) {
+                alert(error.message);
+                return;
+            }
+
+            const user = data.user || data.session?.user;
+
+            if (!user) {
+                alert("Signup succeeded but user data not returned.");
+                return;
+            }
+
+            // 2. Save profile to database
+            const { error: profileError } = await supabaseClient
+                .from("profiles")
+                .insert([
+                    {
+                        id: user.id,
+                        full_name: fullName,
+                        email: email
+                    }
+                ]);
+            if (profileError) {
+                console.error(profileError);
+                alert("Account created but profile saving failed.");
+                return;
+            }
+
+            // 3. Success
+            alert("Account created successfully!");
+
+            // 4. Redirect to login
+            window.location.href = "staff_login.html";
+        });
+    </script>
+
+</body>
+
+</html>
