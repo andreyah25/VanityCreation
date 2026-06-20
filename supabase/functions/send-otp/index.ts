@@ -1,6 +1,10 @@
 import { serve } from "https://deno.land/std@0.224.0/http/server.ts";
 import { createClient } from "@supabase/supabase-js";
 
+const corsHeaders = {
+  "Access-Control-Allow-Origin": "*",
+  "Access-Control-Allow-Headers": "authorization, x-client-info, apikey, content-type",
+};
 const supabase = createClient(
   Deno.env.get("SUPABASE_URL")!,
   Deno.env.get("SUPABASE_SERVICE_ROLE_KEY")!
@@ -51,10 +55,11 @@ serve(async (req) => {
 
     return new Response(
       JSON.stringify({ success: true }),
-      { status: 200 }
+      { ...corsHeaders, status: 200 }
     );
   } catch (e) {
     return new Response(JSON.stringify({ error: String(e) }), {
+      ...corsHeaders,
       status: 500,
     });
   }
