@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html lang="en">
 
@@ -11,7 +10,6 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@300;400;500;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-
     <link rel="stylesheet" href="staff_dashboard.css">
     <link rel="stylesheet" href="client_dashboard.css">
     <link rel="stylesheet" href="staff_repository.css">
@@ -74,13 +72,13 @@
         </aside>
 
         <main class="content">
-            
+
             <div class="repo-top-header-block">
                 <div class="page-header">
                     <h1>Repository</h1>
                     <p>Manage and organize folders and images stored in your workspace.</p>
                 </div>
-                
+
                 <div class="filter-dropdown-wrapper">
                     <button class="add-new-client-btn" id="addNewDropdownTrigger">
                         <i class="fa-solid fa-plus"></i>
@@ -129,10 +127,16 @@
                 </div>
             </div>
 
-            <div class="ui-table-card-panel repo-grid-card-panel">
-                <div class="repo-folders-grid-panel" id="repositoryFoldersGrid">
+            <div class="repo-view-container">
+
+                <div class="repo-folders-grid-panel" id="foldersView">
                     <div class="empty-repo-message">Loading active directories...</div>
                 </div>
+
+                <div class="repo-photos-grid-panel" id="photosView" style="display:none;">
+                    <div class="empty-repo-message">No photos yet.</div>
+                </div>
+
             </div>
 
         </main>
@@ -144,14 +148,14 @@
                 <i class="fa-solid fa-folder-plus"></i>
                 <h2>New Folder</h2>
             </div>
-            
+
             <form class="modal-form" id="newFolderForm">
                 <p class="form-instruction">Enter folder information.</p>
-                
+
                 <div class="form-field">
                     <input type="text" id="folderNameInput" placeholder="Folder Name" required value="Untitled Folder">
                 </div>
-                
+
                 <button type="submit" class="save-client-btn">Create Folder</button>
             </form>
         </div>
@@ -167,17 +171,23 @@
         );
 
         let currentUser = null;
+        let selectedFolderId = null;
+
+        const AI_API = "http://localhost:8000/detect";
+
 
         window.addEventListener("load", async () => {
             try {
                 const { data: { session } } = await supabaseClient.auth.getSession();
+
                 if (!session) {
                     window.location.href = "staff_login.html";
                     return;
                 }
+
                 currentUser = session.user;
-                
-                let { data: profile } = await supabaseClient
+
+                const { data: profile } = await supabaseClient
                     .from("staff_profiles")
                     .select("*")
                     .eq("id", currentUser.id)
@@ -193,132 +203,341 @@
                 await loadRepositoryFolders();
 
             } catch (err) {
-                console.error("Initialization error:", err);
+                console.error("Init error:", err);
             }
         });
+
 
         document.getElementById("logoutBtn").addEventListener("click", async (e) => {
             e.preventDefault();
             await supabaseClient.auth.signOut();
-            window.location.href = "staff_login.html";
+            window.location.href = "landing_page.html";
         });
 
-        // Toggle dropdown options block
-        const addNewBtn = document.getElementById('addNewDropdownTrigger');
-        const addNewMenu = document.getElementById('addNewDropdownMenu');
+        const addNewBtn = document.getElementById("addNewDropdownTrigger");
+        const addNewMenu = document.getElementById("addNewDropdownMenu");
 
-        addNewBtn.addEventListener('click', (e) => {
-            e.stopPropagation();
-            addNewMenu.classList.toggle('show');
+        if (addNewBtn && addNewMenu) {
+
+            addNewBtn.addEventListener("click", (e) => {
+                e.stopPropagation();
+                addNewMenu.classList.toggle("show");
+            });
+
+            document.addEventListener("click", (e) => {
+                if (!addNewMenu.contains(e.target) && e.target !== addNewBtn) {
+                    addNewMenu.classList.remove("show");
+                }
+            });
+        }
+        const folderModal = document.getElementById("createFolderModal");
+        const newFolderForm = document.getElementById("newFolderForm");
+
+        document.getElementById("createFolderActionOption").addEventListener("click", () => {
+            folderModal.classList.add("show");
         });
 
-        document.addEventListener('click', (e) => {
-            if (!addNewMenu.contains(e.target) && e.target !== addNewBtn) {
-                addNewMenu.classList.remove('show');
-            }
-        });
-
-        const createFolderOption = document.getElementById('createFolderActionOption');
-        const folderModal = document.getElementById('createFolderModal');
-        const newFolderForm = document.getElementById('newFolderForm');
-
-        createFolderOption.addEventListener('click', () => {
-            addNewMenu.classList.remove('show');
-            folderModal.classList.add('show');
-            setTimeout(() => document.getElementById('folderNameInput').select(), 100);
-        });
-
-        folderModal.addEventListener('click', (e) => {
+        folderModal.addEventListener("click", (e) => {
             if (e.target === folderModal) {
-                folderModal.classList.remove('show');
+                folderModal.classList.remove("show");
                 newFolderForm.reset();
             }
         });
 
-        newFolderForm.addEventListener('submit', async (e) => {
+        newFolderForm.addEventListener("submit", async (e) => {
             e.preventDefault();
-            const folderName = document.getElementById('folderNameInput').value.trim();
+
+            const folderName = document.getElementById("folderNameInput").value.trim();
             if (!folderName || !currentUser) return;
 
-            try {
-                const { error } = await supabaseClient
-                    .from('folders')
-                    .insert({
-                        user_id: currentUser.id,
-                        folder_name: folderName
-                    });
-
-                if (error) throw error;
-
-                folderModal.classList.remove('show');
-                newFolderForm.reset();
-                await loadRepositoryFolders();
-
-            } catch (err) {
-                alert("Database folder generation failed: " + err.message);
-            }
-        });
-
-        async function loadRepositoryFolders() {
-            const gridContainer = document.getElementById('repositoryFoldersGrid');
-            if (!gridContainer) return;
-
-            try {
-                const { data: folders, error } = await supabaseClient
-                    .from('folders')
-                    .select('*')
-                    .order('created_at', { ascending: false });
-
-                if (error) throw error;
-
-                if (!folders || folders.length === 0) {
-                    gridContainer.innerHTML = `<div class="empty-repo-message">No folders created yet. Click 'Add New' to begin.</div>`;
-                    return;
-                }
-
-                gridContainer.innerHTML = '';
-                folders.forEach(folder => {
-                    const cardNode = document.createElement('div');
-                    cardNode.className = 'folder-card-item';
-                    cardNode.setAttribute('onclick', `MapsToFolderView('${folder.id}')`);
-                    cardNode.innerHTML = `
-                        <div class="folder-icon-circle">
-                            <i class="fa-solid fa-folder"></i>
-                        </div>
-                        <div class="folder-meta-details">
-                            <h3>${escapeHtml(folder.folder_name)}</h3>
-                        </div>
-                    `;
-                    gridContainer.appendChild(cardNode);
+            const { error } = await supabaseClient
+                .from("folders")
+                .insert({
+                    user_id: currentUser.id,
+                    folder_name: folderName
                 });
 
+            if (error) {
+                alert(error.message);
+                return;
+            }
+
+            folderModal.classList.remove("show");
+            newFolderForm.reset();
+            await loadRepositoryFolders();
+        });
+        function showFolders() {
+            document.getElementById("foldersView").style.display = "grid";
+            document.getElementById("photosView").style.display = "none";
+        }
+
+        function showPhotos() {
+            document.getElementById("foldersView").style.display = "none";
+            document.getElementById("photosView").style.display = "grid";
+        }
+
+        async function loadRepositoryFolders() {
+            const grid = document.getElementById("foldersView");
+
+            const { data: folders, error } = await supabaseClient
+                .from("folders")
+                .select("*")
+                .order("created_at", { ascending: false });
+
+            if (error) {
+                console.error(error);
+                return;
+            }
+
+            if (!folders || folders.length === 0) {
+                grid.innerHTML = `<div class="empty-repo-message">No folders yet.</div>`;
+                return;
+            }
+
+            grid.innerHTML = "";
+
+            folders.forEach(folder => {
+                const div = document.createElement("div");
+                div.className = "folder-card-item";
+
+                div.onclick = () => navigateToFolder(folder.id);
+
+                div.innerHTML = `
+            <div class="folder-icon-circle">
+                <i class="fa-solid fa-folder"></i>
+            </div>
+            <h3>${escapeHtml(folder.folder_name)}</h3>
+        `;
+
+                grid.appendChild(div);
+            });
+
+            showFolders();
+        }
+        async function navigateToFolder(folderId, folderName) {
+            selectedFolderId = folderId;
+            await loadFolderPhotos(folderId);
+        }
+
+        async function loadFolderPhotos(folderId) {
+            if (!folderId) return;
+            selectedFolderId = folderId;
+
+            showPhotos();
+
+            const grid = document.getElementById("photosView");
+
+            const { data: photos, error } = await supabaseClient
+                .from("photos")
+                .select("*")
+                .eq("folder_id", folderId)
+                .order("created_at", { ascending: false });
+            console.log("PHOTOS RESULT:", photos);
+            console.log("PHOTOS ERROR:", error);
+
+            if (error) {
+                console.error(error);
+                return;
+            }
+
+            grid.innerHTML = "";
+
+            if (!photos.length) {
+                grid.innerHTML = `<div class="empty-repo-message">No photos found.</div>`;
+                return;
+            }
+
+            photos.forEach(photo => {
+                const div = document.createElement("div");
+
+                div.innerHTML = `
+    <img src="${photo.image_url}" style="width:250px;height:250px;object-fit:cover;">
+    <p>${photo.file_name}</p>
+    
+    <small>${(photo.tags || []).join(", ")}</small>
+
+    <input type="text" id="tag-${photo.id}" placeholder="Enter tag">
+    <button onclick="saveTag('${photo.id}')">Save Tag</button>
+`;
+
+                grid.appendChild(div);
+            });
+        }
+
+        async function saveTag(photoId) {
+            const input = document.getElementById(`tag-${photoId}`);
+            const tagValue = input.value.trim();
+
+            if (!tagValue) {
+                alert("Enter tag first");
+                return;
+            }
+
+            const { data: photoData, error: fetchError } = await supabaseClient
+                .from("photos")
+                .select("tags")
+                .eq("id", photoId)
+                .single();
+
+            if (fetchError) {
+                console.error(fetchError);
+                return;
+            }
+
+            const existingTags = photoData.tags || [];
+            const updatedTags = [...existingTags, tagValue];
+
+            const { error } = await supabaseClient
+                .from("photos")
+                .update({ tags: updatedTags })
+                .eq("id", photoId);
+
+            if (error) {
+                console.error(error);
+                alert("Failed to save tag");
+                return;
+            }
+
+            alert("Tag saved!");
+            await loadFolderPhotos(selectedFolderId);
+        }
+        const uploadInput = document.getElementById("photoFilesUploader");
+
+        document.getElementById("uploadPhotosActionOption").addEventListener("click", () => {
+            if (!selectedFolderId) {
+                alert("Please select a folder first.");
+                return;
+            }
+            uploadInput.click();
+        });
+
+        uploadInput.addEventListener("change", async (e) => {
+            const files = e.target.files;
+            if (!files.length) return;
+
+            for (const file of files) {
+                await uploadPhoto(file);
+            }
+
+            alert("Upload complete!");
+            await loadFolderPhotos(selectedFolderId);
+        });
+
+
+        async function uploadPhoto(file) {
+            const filePath = `${currentUser.id}/${Date.now()}_${file.name}`;
+
+            const { error: uploadError } = await supabaseClient.storage
+                .from("repository-photos")
+                .upload(filePath, file);
+
+            if (uploadError) {
+                console.error(uploadError);
+                return;
+            }
+
+            const { data } = supabaseClient.storage
+                .from("repository-photos")
+                .getPublicUrl(filePath);
+
+            const imageUrl = data.publicUrl;
+
+            const photoId = await savePhotoRecord(file.name, imageUrl);
+
+            if (!photoId)
+                console.error("Failed to save photo record.");
+            return;
+
+        }
+
+        async function savePhotoRecord(fileName, imageUrl) {
+
+            const { data, error } = await supabaseClient
+                .from("photos")
+                .insert({
+                    user_id: currentUser.id,
+                    folder_id: selectedFolderId,
+                    file_name: fileName,
+                    image_url: imageUrl,
+                    tags: []
+                })
+                .select();
+
+            console.log("INSERT DATA:", data);
+            console.log("INSERT ERROR:", error);
+
+            if (error) {
+                alert(error.message);
+                return null;
+            }
+
+            return data[0].id;
+        }
+        async function detectTags(imageUrl, photoId) {
+            try {
+                const res = await fetch(AI_API, {
+                    method: "POST",
+                    headers: { "Content-Type": "application/json" },
+                    body: JSON.stringify({ image_url: imageUrl })
+                });
+
+                const result = await res.json();
+
+                await supabaseClient
+                    .from("photos")
+                    .update({ tags: result.tags })
+                    .eq("id", photoId);
+
+                await loadFolderPhotos(selectedFolderId);
+
             } catch (err) {
-                console.error("Error loading folders:", err);
-                gridContainer.innerHTML = `<div class="empty-repo-message" style="color: #cc3333;">Failed to load system folders repository maps.</div>`;
+                console.error("AI error:", err);
             }
         }
 
-        function navigateToFolderView(folderId) {
-            console.log("Navigating to folder ID:", folderId);
+
+        document.getElementById("repoFolderSearchInput").addEventListener("input", async (e) => {
+            const query = e.target.value.toLowerCase();
+
+            if (!selectedFolderId) return;
+
+            const { data } = await supabaseClient
+                .from("photos")
+                .select("*")
+                .eq("folder_id", selectedFolderId);
+
+            const filtered = data.filter(photo =>
+                photo.file_name.toLowerCase().includes(query) ||
+                (photo.tags || []).some(tag => tag.toLowerCase().includes(query))
+            );
+
+            renderPhotos(filtered);
+        });
+
+        function renderPhotos(photos) {
+            const grid = document.getElementById("photosView");
+            grid.innerHTML = "";
+
+            photos.forEach(photo => {
+                const div = document.createElement("div");
+                div.innerHTML = `
+            <img src="${photo.image_url}" style="width:180px;height:180px;object-fit:cover;">
+            <p>${photo.file_name}</p>
+        `;
+                grid.appendChild(div);
+            });
         }
+
 
         function escapeHtml(str) {
-            return str.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/"/g, "&quot;").replace(/'/g, "&#039;");
+            return str
+                .replace(/&/g, "&amp;")
+                .replace(/</g, "&lt;")
+                .replace(/>/g, "&gt;")
+                .replace(/"/g, "&quot;")
+                .replace(/'/g, "&#039;");
         }
 
-        const uploadPhotosOption = document.getElementById('uploadPhotosActionOption');
-        const hiddenFileInput = document.getElementById('photoFilesUploader');
-
-        uploadPhotosOption.addEventListener('click', () => {
-            addNewMenu.classList.remove('show');
-            hiddenFileInput.click();
-        });
-
-        hiddenFileInput.addEventListener('change', (event) => {
-            const files = event.target.files;
-            if (!files.length || !currentUser) return;
-            console.log(`Processing image assets stream bundle injection pipeline for ${files.length} frames.`);
-        });
     </script>
 </body>
 

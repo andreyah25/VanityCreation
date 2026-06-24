@@ -99,7 +99,6 @@
 
       try {
 
-        // 1. CREATE AUTH USER
         const { data: signUpData, error: signUpError } =
           await supabaseClient.auth.signUp({
             email,
@@ -121,16 +120,16 @@
 
         console.log("USER CREATED:", user.id);
 
-        // 2. INSERT PROFILE (IMPORTANT FIX)
         const { error: profileError } = await supabaseClient
-          .from("profiles")
+          .from("staff_profiles")
           .insert([
             {
               id: user.id,
               full_name: fullName,
               email: email,
               role: "staff",
-              is_verified: false
+              verified: true,
+              avatar_url: null
             }
           ]);
 

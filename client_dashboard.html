@@ -43,7 +43,7 @@
                     <i class="fa-solid fa-table-cells-large"></i>
                     Home
                 </a>
-                <a href="client_dashboard.html" class="active">
+                <a href="frontend-client/client_dashboard.html" class="active">
                     <i class="fa-solid fa-users"></i>
                     Clients
                 </a>
@@ -195,7 +195,6 @@
             "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InJlamFvc2F5bGxkeWh2YnloZ3hsIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODEwMjE3MDUsImV4cCI6MjA5NjU5NzcwNX0.1GNinip2Qs923GaoVe6E2EGxp6ixnsJgF4bfDkH2K4A"
         );
 
-        // Core Dashboard Auth Loader Initialization
         window.addEventListener("load", async () => {
             try {
                 const { data: { session } } = await supabaseClient.auth.getSession();
@@ -221,11 +220,10 @@
             }
         });
 
-        // Logout Session Termination Execution Channel
         document.getElementById("logoutBtn").addEventListener("click", async (e) => {
             e.preventDefault();
             await supabaseClient.auth.signOut();
-            window.location.href = "staff_login.html";
+            window.location.href = "landing_page.html";
         });
 
 
